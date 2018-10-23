@@ -12,10 +12,8 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_has_an_id
-    
   end
 
   def test_it_has_an_name
-    
   end
 end
