@@ -13,16 +13,10 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_has_an_id
-<<<<<<< HEAD
-  end
-
-  def test_it_has_an_name
-=======
     assert_equal 5, @merchant.id
   end
 
   def test_it_has_an_name
     assert_equal "Nixon", @merchant.name
->>>>>>> d0c6455780e3fc7f82c61e7bf1ae40f728540b6e
   end
 end
