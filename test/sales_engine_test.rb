@@ -52,6 +52,5 @@ class SalesEngineTest < Minitest::Test
     ]
 
     assert_equal expected, @se.csv_parser("./data/mock_data.csv")
-    require 'pry'; binding.pry
   end
 end
