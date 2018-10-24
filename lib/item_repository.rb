@@ -1,8 +1,11 @@
+require_relative '../lib/bt_methods'
+
 class ItemRepository
-  attr_reader :items
+  include BTMethods
+  attr_reader :repository
 
   def initialize(items)
-    @items = items
+    @repository = items
   end
 
   def self.create_items(items_data)

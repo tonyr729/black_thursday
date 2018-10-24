@@ -17,19 +17,6 @@ class ItemRepositoryTest < Minitest::Test
       :updated_at  => Time.now,
       :merchant_id => 2
     }
-    @item_1 = Item.new(@data_1)
-    @ir = ItemRepository.new([@item_1])
-  end
-
-  def test_it_exists
-    assert_instance_of ItemRepository, @ir
-  end
-
-  def test_it_holds_items
-    assert_equal [@item_1], @ir.items
-  end
-
-  def test_it_creates_items
     @data_2 = {
       :id          => 2,
       :name        => "Pen",
@@ -39,13 +26,37 @@ class ItemRepositoryTest < Minitest::Test
       :updated_at  => Time.now,
       :merchant_id => 3
     }
-    items_data = [@data_1, @data_2]
-    ir = ItemRepository.create_items(items_data)
+    @items_data = [@data_1, @data_2]
+    @item_1 = Item.new(@data_1)
+    @ir = ItemRepository.new([@item_1])
+  end
 
-    assert_instance_of Item, ir.items[0]
-    assert_equal "Pencil", ir.items[0].name
-    assert_instance_of Item, ir.items[1]
-    assert_equal 3, ir.items[1].merchant_id
+  def test_it_exists
+    assert_instance_of ItemRepository, @ir
+  end
+
+  def test_it_holds_items
+    assert_equal [@item_1], @ir.repository
+  end
+
+  def test_it_creates_items
+    ir = ItemRepository.create_items(@items_data)
+
+    assert_instance_of Item, ir.repository[0]
+    assert_equal "Pencil", ir.repository[0].name
+    assert_instance_of Item, ir.repository[1]
+    assert_equal 3, ir.repository[1].merchant_id
+  end
+
+  def test_it_returns_all_subclasses
+    assert_equal [@item_1], @ir.all
+  end
+
+  def test_it_finds_by_id
+    ir = ItemRepository.create_items(@items_data)
+    
+    assert_nil ir.find_by_id(4)
+    assert_equal ir.repository[1], ir.find_by_id(2)
   end
 
 
