@@ -38,4 +38,17 @@ class MerchantRepositoryTest < Minitest::Test
   def test_it_finds_all_subclasses
     assert_equal [@merchant_1], @mr.all
   end
+
+  def test_it_finds_by_id
+    incoming_data =[
+      {:id => 1, :name => "Tony", :updated => 2014},
+      {:id => 2, :name => "Ali", :updated => 2014},
+      {:id => 3, :name => "Michael", :updated => 2014}
+    ]
+
+    mr = MerchantRepository.create_merchants(incoming_data)
+
+    assert_nil mr.find_by_id(6)
+    assert_equal mr.repository[1], mr.find_by_id(2)
+  end
 end
