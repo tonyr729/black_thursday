@@ -2,7 +2,7 @@ require_relative '../lib/merchant_repository'
 require 'csv'
 
 class SalesEngine
-  attr_reader :items_csv, :merchants_csv
+  attr_reader :items_csv, :merchants_csv, :merchants
   def initialize(csv_files)
     @items_csv = csv_files[:items]
     @merchants_csv = csv_files[:merchants]
