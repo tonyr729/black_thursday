@@ -58,8 +58,12 @@ class ItemRepositoryTest < Minitest::Test
     assert_nil ir.find_by_id(4)
     assert_equal ir.repository[1], ir.find_by_id(2)
   end
-
-
+  
+  def test_it_finds_by_name
+    ir = ItemRepository.create_items(@items_data)
+    
+    assert_equal ir.repository[1], ir.find_by_name("Pen")
+  end
 
 
 
