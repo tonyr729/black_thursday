@@ -14,9 +14,7 @@ class MerchantRepository
         id: merchant_data[:id],
         name: merchant_data[:name]
       })
-
     end
-
     self.new(merchant_list)
   end
 end
