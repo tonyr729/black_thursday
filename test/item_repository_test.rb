@@ -26,7 +26,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_holds_items
-    assert_equal [@item_1], @ir.items
+    assert_equal [@item_1], @ir.repository
   end
 
   def test_it_creates_items
@@ -42,10 +42,14 @@ class ItemRepositoryTest < Minitest::Test
     items_data = [@data_1, @data_2]
     ir = ItemRepository.create_items(items_data)
 
-    assert_instance_of Item, ir.items[0]
-    assert_equal "Pencil", ir.items[0].name
-    assert_instance_of Item, ir.items[1]
-    assert_equal 3, ir.items[1].merchant_id
+    assert_instance_of Item, ir.repository[0]
+    assert_equal "Pencil", ir.repository[0].name
+    assert_instance_of Item, ir.repository[1]
+    assert_equal 3, ir.repository[1].merchant_id
+  end
+
+  def test_it_returns_all_subclasses
+    assert_equal [@item_1], @ir.all
   end
 
 
