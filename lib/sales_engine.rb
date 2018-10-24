@@ -6,12 +6,13 @@ class SalesEngine
   def initialize(csv_files)
     @items_csv = csv_files[:items]
     @merchants_csv = csv_files[:merchants]
+    @merchants = merchants_factory
   end
 
-  def merchants
-    merchants = csv_parser(@merchants_csv)
+  def merchants_factory
+    parsed_merchants_data = csv_parser(@merchants_csv)
 
-    MerchantRepository.create_merchants(merchants)
+    MerchantRepository.create_merchants(parsed_merchants_data)
   end
 
   def csv_parser(csv_path)
