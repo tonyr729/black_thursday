@@ -23,7 +23,7 @@ class ItemRepository
     where_any(price, "unit_price")
   end
 
-
-
-
+  def find_all_by_price_in_range(range)
+    where_any(range, "unit_price")
+  end
 end
