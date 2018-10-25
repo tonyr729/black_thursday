@@ -54,16 +54,20 @@ class ItemRepositoryTest < Minitest::Test
 
   def test_it_finds_by_id
     ir = ItemRepository.create_items(@items_data)
-    
+
     assert_nil ir.find_by_id(4)
     assert_equal ir.repository[1], ir.find_by_id(2)
   end
 
+  def test_it_can_delete_an_id
+    ir = ItemRepository.create_items(@items_data)
+
+    item_1 = ir.repository[0]
+    item_2 = ir.repository[1]
 
 
-
-
-
+    assert_equal [item_1], ir.delete(2)
+  end
 
 
 end
