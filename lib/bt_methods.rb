@@ -1,16 +1,16 @@
+require 'pry'
+
 module BTMethods
   def all
     @repository
   end
 
-  def find_by_id(value, key = "id")
+  def find_by_id(id)
     @repository.find do |repository_element|
-      method_name = key
-      property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
-      property == value
+      repository_element.id.to_i == id
     end
   end
-  
+
   def find_by_name(name)
     where(name, "name")
   end
@@ -21,12 +21,11 @@ module BTMethods
 
   def where(value, key)
     @repository.find do |repository_element|
-      method_name = key
-      property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
+      property = repository_element.public_send(key) if repository_element.respond_to? key
       property == value
     end
   end
-  
+
   def where_any(value, key)
     result = where_any_i(value, key) if value.class == Fixnum
     result = where_any_f(value, key) if value.class == Float
@@ -34,7 +33,7 @@ module BTMethods
     result = where_any_r(value, key) if value.class == Range
     result
   end
-  
+
   def where_any_i(value, key)
     @repository.select do |repository_element|
       method_name = key
@@ -42,7 +41,7 @@ module BTMethods
       property == value
     end
   end
-  
+
   def where_any_f(value, key)
     @repository.select do |repository_element|
       method_name = key
@@ -69,7 +68,7 @@ module BTMethods
       value.include?(property)
     end
   end
- 
+
   def create(attributes)
     highest_id = @repository.max_by { |x| x.id}.id
     new = @new_instance.new(attributes)
