@@ -18,7 +18,8 @@ class Item
     @merchant_id = item_info[:merchant_id]
   end
 
-
-
+  def unit_price_to_dollars
+    @unit_price.truncate(2).to_f
+  end
 
 end

@@ -9,4 +9,10 @@ module BTMethods
     end
   end
 
+  def delete(id)
+  @repository.delete_if do |repository_element|
+    repository_element.id == id
+    end
+  end
+
 end

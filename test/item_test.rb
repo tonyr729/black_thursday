@@ -50,6 +50,11 @@ class ItemTest < Minitest::Test
     assert_equal @data[:merchant_id], @item.merchant_id
   end
 
+  def test_it_can_change_the_unit_price_to_dollars
+    assert_equal 10.99, @item.unit_price_to_dollars
+  end
+
+
 
 
 end
