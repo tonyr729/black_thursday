@@ -15,6 +15,9 @@ class ItemRepository
     self.new(item_list)
   end
 
+  def find_all_with_description(description)
+    where_any(description, "description")
+  end
 
 
 
