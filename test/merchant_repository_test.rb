@@ -64,4 +64,18 @@ class MerchantRepositoryTest < Minitest::Test
     expected = mr.repository.max_by { |x| x.id}
     assert_equal expected, actual
   end
+
+  def test_it_updates_attributes
+    incoming_data =[
+      {:id => 1, :name => "Tony"},
+      {:id => 2, :name => "Ali"},
+      {:id => 3, :name => "Michael"}
+    ]
+    mr = MerchantRepository.create_merchants(incoming_data)
+    expected = mr.repository[2]
+    assert_equal "Michael", expected.name
+    actual = mr.update(3, :name => "George")
+    assert_equal expected, actual
+    assert_equal "George", expected.name
+  end
 end

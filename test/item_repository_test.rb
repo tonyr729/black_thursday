@@ -73,7 +73,18 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal expected, actual
   end
 
-
+  def test_it_updates_attributes
+    ir = ItemRepository.create_items(@items_data)
+    expected = ir.repository[1]
+    assert_equal "Pen", expected.name
+    actual = ir.update(2, {name: "Cotton Candy",
+      description: "It's pink",
+      merchant_id: 48})
+    assert_equal expected, actual
+    assert_equal "Cotton Candy", expected.name
+    assert_equal "It's pink", expected.description
+    assert_equal 48, expected.merchant_id
+  end
 
 
 
