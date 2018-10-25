@@ -19,7 +19,9 @@ class MerchantRepository
     self.new(merchant_list)
   end
 
-
+  def inspect
+    "#<#{self.class} #{@repository.size} rows>"
+  end
 
 
 end

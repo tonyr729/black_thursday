@@ -31,4 +31,9 @@ class ItemRepository
   def find_all_by_merchant_id(merchant_id)
     where_any(merchant_id, "merchant_id")
   end
+
+  def inspect
+    "#<#{self.class} #{@repository.size} rows>"
+  end
+
 end

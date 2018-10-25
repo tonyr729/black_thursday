@@ -11,7 +11,8 @@ class SalesEngineTest < Minitest::Test
       :items => "./data/items.csv",
       :merchants => "./data/merchants.csv",
     }
-    @se = SalesEngine.new(@data)
+    @se = SalesEngine.from_csv(@data)
+    binding.pry
   end
 
   def test_it_can_exists
