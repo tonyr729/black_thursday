@@ -18,7 +18,7 @@ class ItemRepositoryTest < Minitest::Test
     }
     @data_2 = {
       :id          => 2,
-      :name        => "Pen",
+      :name        => "Marker",
       :description => "It has ink",
       :unit_price  => BigDecimal.new(5.44,4),
       :created_at  => Time.now,
@@ -61,7 +61,7 @@ class ItemRepositoryTest < Minitest::Test
   def test_it_finds_by_name
     ir = ItemRepository.create_items(@items_data)
     
-    assert_equal ir.repository[1], ir.find_by_name("Pen")
+    assert_equal ir.repository[1], ir.find_by_name("Mark")
   end
   
   def test_it_finds_all_with_description

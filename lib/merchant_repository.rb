@@ -22,6 +22,4 @@ class MerchantRepository
   def inspect
     "#<#{self.class} #{@repository.size} rows>"
   end
-
-
 end

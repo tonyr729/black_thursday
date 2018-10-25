@@ -5,8 +5,4 @@ class Merchant
     @id = merchant_info[:id].to_i
     @name = merchant_info[:name]
   end
-
-
-
-
 end
