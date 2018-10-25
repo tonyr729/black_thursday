@@ -105,12 +105,14 @@ module BTMethods
 
   def create(attributes)
     highest_id = @repository.max_by { |x| x.id}.id
+    binding.pry
     new = @new_instance.new(attributes)
     new.id = highest_id + 1
     @repository << new
   end
 
   def update(id, attributes)
+    return nil if attributes.include?(:id)
     selected_instance = @repository.find { |x| x.id == id}
     keys_as_strings = attributes.map { |k, v| k.to_s }
     replace_value(attributes, selected_instance, keys_as_strings)
