@@ -26,7 +26,7 @@ module BTMethods
       property == value
     end
   end
-
+  
   def where_any(value, key)
     result = where_any_i(value, key) if value.class == Fixnum
     result = where_any_f(value, key) if value.class == Float
@@ -69,5 +69,35 @@ module BTMethods
       value.include?(property)
     end
   end
-  
+ 
+  def create(attributes)
+    highest_id = @repository.max_by { |x| x.id}.id
+    new = @new_instance.new(attributes)
+    new.id = highest_id + 1
+    @repository << new
+  end
+
+  def update(id, attributes)
+    selected_instance = @repository.find { |x| x.id == id}
+    keys_as_strings = attributes.map { |k, v| k.to_s }
+    replace_value(attributes, selected_instance, keys_as_strings)
+    selected_instance
+  end
+
+  def replace_value(attributes, selected_instance, keys_as_strings)
+    keys_as_strings.each { |method|
+      if selected_instance.send(method).class == String
+      selected_instance.send(method).replace attributes[method.to_sym]
+      else
+        selected_instance.send("#{method}=", attributes[method.to_sym])
+      end
+    }
+  end
+
+  def delete(id)
+  @repository.delete_if do |repository_element|
+    repository_element.id == id
+    end
+  end
+
 end

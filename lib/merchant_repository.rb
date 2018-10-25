@@ -6,6 +6,7 @@ class MerchantRepository
 
   def initialize(merchants)
     @repository = merchants
+    @new_instance = Merchant
   end
 
   def self.create_merchants(merchants_data)
@@ -17,4 +18,8 @@ class MerchantRepository
     end
     self.new(merchant_list)
   end
+
+
+
+
 end
