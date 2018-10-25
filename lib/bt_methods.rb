@@ -3,9 +3,11 @@ module BTMethods
     @repository
   end
 
-  def find_by_id(id)
+  def find_by_id(value, key = "id")
     @repository.find do |repository_element|
-      repository_element.id == id
+      method_name = key
+      property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
+      property == value
     end
   end
   
@@ -22,13 +24,34 @@ module BTMethods
   end
 
   def where_any(value, key)
+    result = where_any_i(value, key) if value.class == Integer
+    result = where_any_f(value, key) if value.class == Float
+    result = where_any_s(value, key) if value.class == String
+    result
+  end
+  
+  def where_any_i(value, key)
+    @repository.select do |repository_element|
+      method_name = key
+      property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
+      property == value
+    end
+  end
+  
+  def where_any_f(value, key)
+    @repository.select do |repository_element|
+      method_name = key
+      property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
+      property.to_f == value
+    end
+  end
+
+  def where_any_s(value, key)
     @repository.select do |repository_element|
       method_name = key
       property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
       property.include?(value)
     end
-    
   end
-
   
 end

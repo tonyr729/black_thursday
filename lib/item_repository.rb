@@ -19,6 +19,10 @@ class ItemRepository
     where_any(description, "description")
   end
 
+  def find_all_by_price(price)
+    where_any(price, "unit_price")
+  end
+
 
 
 
