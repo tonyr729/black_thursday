@@ -15,6 +15,10 @@ module BTMethods
     where(name, "name")
   end
 
+  def find_all_by_name(name)
+    where_any(name, "name")
+  end
+
   def where(value, key)
     @repository.find do |repository_element|
       method_name = key
@@ -48,12 +52,11 @@ module BTMethods
   end
 
   def where_any_s(value, key)
-    value = value.downcase if value.class == String
-
     @repository.select do |repository_element|
       method_name = key
       property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
-      property.include?(value)
+      # require 'pry'; binding.pry
+      property.downcase.include?(value.downcase)
     end
   end
 
