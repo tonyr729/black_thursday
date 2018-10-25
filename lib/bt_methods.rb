@@ -104,8 +104,11 @@ module BTMethods
   end
 
   def create(attributes)
+    if attributes.include?(:updated_at) || attributes.include?(:created_at)
+      attributes[:updated_at] = Time.now.to_s
+      attributes[:created_at] = Time.now.to_s
+    end
     highest_id = @repository.max_by { |x| x.id}.id
-    binding.pry
     new = @new_instance.new(attributes)
     new.id = highest_id + 1
     @repository << new
@@ -125,6 +128,9 @@ module BTMethods
       selected_instance.send(method).replace attributes[method.to_sym]
       else
         selected_instance.send("#{method}=", attributes[method.to_sym])
+      end
+      if selected_instance.class == Item
+        selected_instance.updated_at = Time.now
       end
     end
   end
