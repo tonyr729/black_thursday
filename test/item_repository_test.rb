@@ -64,10 +64,11 @@ class ItemRepositoryTest < Minitest::Test
     
     assert_equal ir.repository[1], ir.find_by_name("Pen")
   end
-
-
-
-
-
-
+  
+  def test_it_finds_all_with_description
+    ir = ItemRepository.create_items(@items_data)
+    
+    assert_equal [], ir.find_all_with_description("purple")
+    assert_equal [ir.repository[1]], ir.find_all_with_description("ink")
+  end
 end
