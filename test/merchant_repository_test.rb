@@ -39,8 +39,6 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_by_id
- 
-
     mr = MerchantRepository.create_merchants(@incoming_data)
 
     assert_nil mr.find_by_id(6)
