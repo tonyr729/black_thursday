@@ -85,4 +85,11 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal [], ir.find_all_by_price_in_range((1..3))
     assert_equal [ir.repository[0]], ir.find_all_by_price_in_range((8..15))
   end
+  
+  def test_it_finds_all_by_merchant_id
+    ir = ItemRepository.create_items(@items_data)
+    
+    assert_equal [], ir.find_all_by_merchant_id(5)
+    assert_equal [ir.repository[1]], ir.find_all_by_merchant_id(3)
+  end
 end
