@@ -21,7 +21,7 @@ class ItemRepositoryTest < Minitest::Test
       :id          => 2,
       :name        => "Pen",
       :description => "It has ink",
-      :unit_price  => BigDecimal.new(10.99,4),
+      :unit_price  => BigDecimal.new(8.44,4),
       :created_at  => Time.now,
       :updated_at  => Time.now,
       :merchant_id => 3
@@ -70,5 +70,12 @@ class ItemRepositoryTest < Minitest::Test
     
     assert_equal [], ir.find_all_with_description("purple")
     assert_equal [ir.repository[1]], ir.find_all_with_description("ink")
+  end
+
+  def test_it_finds_all_by_price
+    ir = ItemRepository.create_items(@items_data)
+
+    assert_equal [], ir.find_all_by_price(4.50)
+    assert_equal [ir.repository[0]], ir.find_all_by_price(10.99)
   end
 end
