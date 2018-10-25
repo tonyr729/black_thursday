@@ -50,4 +50,11 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_equal mr.repository[2], mr.find_by_name("Michael")
   end
+
+  def test_it_finds_all_by_name
+    mr = MerchantRepository.create_merchants(@incoming_data)
+
+    assert_equal [], mr.find_all_by_name("Bob")
+    assert_equal [mr.repository[2]], mr.find_all_by_name("Michael")
+  end
 end
