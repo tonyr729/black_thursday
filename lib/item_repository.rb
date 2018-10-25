@@ -6,6 +6,7 @@ class ItemRepository
 
   def initialize(items)
     @repository = items
+    @new_instance = Item
   end
 
   def self.create_items(items_data)
