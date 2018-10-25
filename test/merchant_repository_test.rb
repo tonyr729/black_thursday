@@ -51,4 +51,17 @@ class MerchantRepositoryTest < Minitest::Test
     assert_nil mr.find_by_id(6)
     assert_equal mr.repository[1], mr.find_by_id(2)
   end
+
+  def test_it_creates_a_new_mr_with_attributes
+    incoming_data =[
+      {:id => 1, :name => "Tony"},
+      {:id => 2, :name => "Ali"},
+      {:id => 3, :name => "Michael"}
+    ]
+
+    mr = MerchantRepository.create_merchants(incoming_data)
+    actual = mr.create({name: "Steve"}).last
+    expected = mr.repository.max_by { |x| x.id}
+    assert_equal expected, actual
+  end
 end

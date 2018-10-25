@@ -9,4 +9,13 @@ module BTMethods
     end
   end
 
+  def create(attributes)
+    highest_id = @repository.max_by { |x| x.id}.id
+    new = @new_instance.new(attributes)
+    binding.pry
+    new.id = highest_id + 1
+    @repository << new
+  end
+
+
 end
