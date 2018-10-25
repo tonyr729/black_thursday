@@ -1,4 +1,5 @@
 require_relative '../lib/bt_methods'
+require 'bigdecimal'
 
 class ItemRepository
   include BTMethods
