@@ -26,4 +26,8 @@ class ItemRepository
   def find_all_by_price_in_range(range)
     where_any(range, "unit_price")
   end
+
+  def find_all_by_merchant_id(merchant_id)
+    where_any(merchant_id, "merchant_id")
+  end
 end

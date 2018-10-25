@@ -24,7 +24,7 @@ module BTMethods
   end
 
   def where_any(value, key)
-    result = where_any_i(value, key) if value.class == Integer
+    result = where_any_i(value, key) if value.class == Fixnum
     result = where_any_f(value, key) if value.class == Float
     result = where_any_s(value, key) if value.class == String
     result = where_any_r(value, key) if value.class == Range
