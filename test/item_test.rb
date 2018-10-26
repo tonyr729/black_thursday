@@ -11,7 +11,7 @@ class ItemTest < Minitest::Test
       :id          => 1,
       :name        => "Pencil",
       :description => "You can use it to write things",
-      :unit_price  => BigDecimal.new(10.99,4),
+      :unit_price  => "1099",
       :created_at  => Time.now,
       :updated_at  => Time.now,
       :merchant_id => 2
@@ -36,7 +36,8 @@ class ItemTest < Minitest::Test
   end
 
   def test_it_has_unit_price
-    assert_equal @data[:unit_price], @item.unit_price
+    expected = BigDecimal("1099", 4) / BigDecimal(100, 4)
+    assert_equal expected, @item.unit_price
   end
 
   def test_it_has_created_at

@@ -94,12 +94,10 @@ module BTMethods
   end
 
   def where_any_r(value, key)
-    value = value.downcase if value.class == String
-
     @repository.select do |repository_element|
       method_name = key
       property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
-      value.include?(property.to_i)
+      value.include?(property)
     end
   end
 
