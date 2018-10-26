@@ -110,7 +110,6 @@ class ItemRepositoryTest < Minitest::Test
   def test_it_updates_attributes
     ir = ItemRepository.create_items(@items_data)
     expected = ir.repository[1]
-    binding.pry
     assert_equal "Marker", expected.name
     actual = ir.update(2, {name: "Cotton Candy",
       description: "It's pink",
