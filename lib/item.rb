@@ -15,12 +15,13 @@ class Item
     @name = item_info[:name]
     @description = item_info[:description]
     @unit_price = item_info[:unit_price].to_f
-    @created_at = Time.parse(item_info[:created_at])
-    @updated_at = Time.parse(item_info[:updated_at])
+    @created_at = Time.parse(item_info[:created_at].to_s)
+    @updated_at = Time.parse(item_info[:updated_at].to_s)
     @merchant_id = item_info[:merchant_id].to_i
   end
 
   def unit_price_to_dollars
+    binding.pry
     @unit_price.truncate(2).to_f
   end
 

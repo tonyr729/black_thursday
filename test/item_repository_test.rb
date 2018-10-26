@@ -30,6 +30,7 @@ class ItemRepositoryTest < Minitest::Test
     @ir = ItemRepository.new([@item_1])
   end
 
+
   def test_it_exists
     assert_instance_of ItemRepository, @ir
   end
@@ -53,45 +54,45 @@ class ItemRepositoryTest < Minitest::Test
 
   def test_it_finds_by_id
     ir = ItemRepository.create_items(@items_data)
- 
+
     assert_nil ir.find_by_id(4)
     assert_equal ir.repository[1], ir.find_by_id(2)
   end
-  
+
   def test_it_finds_by_name
     ir = ItemRepository.create_items(@items_data)
-    
+
     assert_equal ir.repository[1], ir.find_by_name("Mark")
   end
-  
+
   def test_it_finds_all_with_description
     ir = ItemRepository.create_items(@items_data)
-    
+
     assert_equal [], ir.find_all_with_description("purple")
     assert_equal [ir.repository[1]], ir.find_all_with_description("ink")
   end
 
   def test_it_finds_all_by_price
     ir = ItemRepository.create_items(@items_data)
-    
+
     assert_equal [], ir.find_all_by_price(4.50)
     assert_equal [ir.repository[0]], ir.find_all_by_price(10.99)
   end
-  
+
   def test_it_finds_all_by_range
     ir = ItemRepository.create_items(@items_data)
-    
+
     assert_equal [], ir.find_all_by_price_in_range((1..3))
     assert_equal [ir.repository[0]], ir.find_all_by_price_in_range((8..15))
   end
-  
+
   def test_it_finds_all_by_merchant_id
     ir = ItemRepository.create_items(@items_data)
-    
+
     assert_equal [], ir.find_all_by_merchant_id(5)
     assert_equal [ir.repository[1]], ir.find_all_by_merchant_id(3)
   end
-  
+
   def test_it_creates_new_ir_with_attributes
     ir = ItemRepository.create_items(@items_data)
     actual = ir.create({
@@ -109,7 +110,8 @@ class ItemRepositoryTest < Minitest::Test
   def test_it_updates_attributes
     ir = ItemRepository.create_items(@items_data)
     expected = ir.repository[1]
-    assert_equal "Pen", expected.name
+    binding.pry
+    assert_equal "Marker", expected.name
     actual = ir.update(2, {name: "Cotton Candy",
       description: "It's pink",
       merchant_id: 48})
