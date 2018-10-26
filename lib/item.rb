@@ -21,7 +21,6 @@ class Item
   end
 
   def unit_price_to_dollars
-    binding.pry
     @unit_price.truncate(2).to_f
   end
 

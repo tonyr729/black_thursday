@@ -2,6 +2,7 @@ require_relative 'test_helper.rb'
 require 'pry'
 require 'bigdecimal'
 require './lib/item'
+require 'time'
 
 
 class ItemTest < Minitest::Test
@@ -39,11 +40,15 @@ class ItemTest < Minitest::Test
   end
 
   def test_it_has_created_at
-    assert_equal @data[:created_at], @item.created_at
+    actual = @item.created_at.to_s
+    expected = @data[:created_at].to_s
+    assert_equal expected, actual
   end
 
   def test_it_has_updated_at
-    assert_equal @data[:updated_at], @item.updated_at
+    actual = @item.updated_at.to_s
+    expected = @data[:updated_at].to_s
+    assert_equal expected, actual
   end
 
   def test_it_has_merchant_id
