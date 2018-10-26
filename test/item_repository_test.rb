@@ -11,7 +11,7 @@ class ItemRepositoryTest < Minitest::Test
       :id          => 1,
       :name        => "Pencil",
       :description => "You can use it to write things",
-      :unit_price  => BigDecimal.new(10.99,4),
+      :unit_price  => "2500",
       :created_at  => Time.now,
       :updated_at  => Time.now,
       :merchant_id => 2
@@ -20,7 +20,7 @@ class ItemRepositoryTest < Minitest::Test
       :id          => 2,
       :name        => "Marker",
       :description => "It has ink",
-      :unit_price  => BigDecimal.new(5.44,4),
+      :unit_price  => "544",
       :created_at  => Time.now,
       :updated_at  => Time.now,
       :merchant_id => 3
@@ -76,14 +76,14 @@ class ItemRepositoryTest < Minitest::Test
     ir = ItemRepository.create_items(@items_data)
 
     assert_equal [], ir.find_all_by_price(4.50)
-    assert_equal [ir.repository[0]], ir.find_all_by_price(10.99)
+    assert_equal [ir.repository[0]], ir.find_all_by_price(BigDecimal(25))
   end
 
   def test_it_finds_all_by_range
     ir = ItemRepository.create_items(@items_data)
 
     assert_equal [], ir.find_all_by_price_in_range((1..3))
-    assert_equal [ir.repository[0]], ir.find_all_by_price_in_range((8..15))
+    assert_equal [ir.repository[0]], ir.find_all_by_price_in_range((20..30))
   end
 
   def test_it_finds_all_by_merchant_id
