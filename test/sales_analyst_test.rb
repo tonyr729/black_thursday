@@ -5,6 +5,7 @@ require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
 require_relative '../lib/item'
 require_relative '../lib/merchant'
+require 'pry'
 
 class SalesAnalystTest < MiniTest::Test
 
@@ -18,7 +19,7 @@ class SalesAnalystTest < MiniTest::Test
     @item_7 = Item.new({id: 7, name: "Corn dog", description: "e", unit_price: "30098", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
     @item_8 = Item.new({id: 8, name: "Chicago dog", description: "f", unit_price: "40032", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
     @item_9 = Item.new({id: 9, name: "Tree", description: "g", unit_price: "400051", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
-    @item_10 = Item.new({id: 10, name: "Mountain", description: "h", unit_price: "40002", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
+    @item_10 = Item.new({id: 10, name: "Mountain", description: "h", unit_price: "40002", created_at: Time.now, updated_at: Time.now, merchant_id: 25})
     @item_11 = Item.new({id: 11, name: "Doctor Costume", description: "i", unit_price: "4007", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
     @item_12 = Item.new({id: 12, name: "Pumpkin", description: "j", unit_price: "5005", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
     @item_13 = Item.new({id: 13, name: "Grilled Chicken Breast", description: "i", unit_price: "500", created_at: Time.now, updated_at: Time.now, merchant_id: 45})
@@ -47,10 +48,14 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_items_per_merchant
     actual = @sa.average_items_per_merchant
-    expected = (@items.count / @merchants.count.to_f)
-    assert_equal expected, actual
+    assert_equal 6.67, actual
   end
 
+  def test_it_calculates_average_items_per_merchant_standard_deviation
+    actual = @sa.average_items_per_merchant_standard_deviation
+    expected = 2.52
+    assert_equal expected, actual
+  end
 
 
 end
