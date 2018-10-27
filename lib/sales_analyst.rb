@@ -28,5 +28,15 @@ class SalesAnalyst
     st_dev.round(2)
   end
 
+  def merchants_with_high_item_count
+    st_dev = average_items_per_merchant_standard_deviation
+    mr = @merchants.repository
+    mr.select do |merchant|
+      matches = @items.repository.select do |item|
+        item.merchant_id == merchant.id
+      end
+      matches.count > (st_dev + 1 + average_items_per_merchant)
+    end
+  end
 
 end
