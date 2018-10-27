@@ -2,6 +2,7 @@ require_relative 'test_helper'
 require_relative '../lib/sales_engine'
 require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
+require_relative '../lib/sales_analyst'
 require 'pry'
 
 
@@ -58,6 +59,10 @@ class SalesEngineTest < Minitest::Test
 
   def test_it_can_create_an_item_repository
     assert_instance_of ItemRepository, @se.items_factory
+  end
+
+  def test_it_has_analyst
+    assert_instance_of SalesAnalyst, @se.analyst
   end
 
 end
