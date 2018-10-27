@@ -1,16 +1,15 @@
-require_relative '../lib/sales_engine'
 
-
-class SalesAnalyst < SalesEngine
+class SalesAnalyst
 
   attr_reader :items, :merchants
 
-  def initialize(merchants, items)
-    super(merchants, items)
+  def initialize (items, merchants)
+    @items = items
+    @merchants = merchants
   end
 
   def average_items_per_merchant
-    (@items.count / @merchants.count.to_f)
+    @items.repository.count / @merchants.repository.count.to_f
   end
 
 end

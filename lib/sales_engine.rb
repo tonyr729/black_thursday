@@ -14,7 +14,7 @@ class SalesEngine
     @merchants_csv = csv_files[:merchants]
     @merchants = merchants_factory
     @items = items_factory
-    @analyst = SalesAnalyst.new
+    @analyst = SalesAnalyst.new(@items, @merchants)
   end
 
   def self.from_csv(csv_files)
