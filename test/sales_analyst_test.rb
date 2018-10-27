@@ -33,18 +33,24 @@ class SalesAnalystTest < MiniTest::Test
 
     @merchant_1 = Merchant.new({id: 25, name: "Useless Collectibles"}),
     @merchant_2 = Merchant.new({id: 35, name: "doganxiety.bacon"}),
-    @merchant_2 = Merchant.new({id: 45, name: "nationalcorndogday.com"})
+    @merchant_3 = Merchant.new({id: 45, name: "nationalcorndogday.com"})
     @merchants = [@merchant_1, @merchant_2, @merchant_3]
 
     @mr = MerchantRepository.new(@merchants)
     @ir = ItemRepository.new(@items)
-    @sales_analyst = SalesAnalyst.new
+    @sa = SalesAnalyst.new
   end
 
   def test_it_exists
-    assert_instance_of SalesAnalyst, @sales_analyst
+    assert_instance_of SalesAnalyst, @sa
   end
 
+  def test_it_calculates_average_items_per_merchant
+    binding.pry
+    actual = @sa.average_items_per_merchant
+    expected = (@items.count / @merchants.count.to_f)
+    assert_equal expected, actual
+  end
 
 
 
