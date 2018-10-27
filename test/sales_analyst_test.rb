@@ -1,6 +1,6 @@
 require_relative '../test/test_helper'
-require_relative '../lib/sales_engine'
 require_relative '../lib/sales_analyst'
+require_relative '../lib/sales_engine'
 require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
 require_relative '../lib/item'
@@ -38,7 +38,7 @@ class SalesAnalystTest < MiniTest::Test
 
     @mr = MerchantRepository.new(@merchants)
     @ir = ItemRepository.new(@items)
-    @sa = SalesAnalyst.new
+    @sa = SalesAnalyst.new(@ir, @mr)
   end
 
   def test_it_exists
@@ -46,7 +46,6 @@ class SalesAnalystTest < MiniTest::Test
   end
 
   def test_it_calculates_average_items_per_merchant
-    binding.pry
     actual = @sa.average_items_per_merchant
     expected = (@items.count / @merchants.count.to_f)
     assert_equal expected, actual
