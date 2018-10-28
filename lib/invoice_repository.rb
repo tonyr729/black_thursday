@@ -27,4 +27,8 @@ class InvoiceRepository
   def find_all_by_status(status)
     where_any(status, "status")
   end
+
+  def inspect
+    "#<#{self.class} #{@repository.size} rows>"
+  end
 end
