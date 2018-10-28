@@ -98,7 +98,7 @@ class ItemRepositoryTest < Minitest::Test
     actual = ir.create({
       :name        => "Brioche Bun",
       :description => "Add coconut oil, then grill it",
-      :unit_price  => BigDecimal.new(10.99,4),
+      :unit_price  => BigDecimal(10.99,4),
       :created_at  => Time.now,
       :updated_at  => Time.now,
       :merchant_id => 6
