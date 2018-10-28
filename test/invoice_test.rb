@@ -38,7 +38,7 @@ class InvoiceTest < Minitest::Test
     assert_equal @data[:created_at].to_s, @i.created_at.to_s
   end
   
-  def test_it_has_instance_of_time
+  def test_it_has_created_instance_of_time
     assert_instance_of Time, @i.created_at
   end
 
@@ -46,7 +46,7 @@ class InvoiceTest < Minitest::Test
     assert_equal @data[:updated_at].to_s, @i.updated_at.to_s
   end
   
-  def test_it_has_instance_of_time
+  def test_it_has_updated_instance_of_time
     assert_instance_of Time, @i.updated_at
   end
 end
