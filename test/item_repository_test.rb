@@ -124,7 +124,9 @@ class ItemRepositoryTest < Minitest::Test
     ir = ItemRepository.create_items(@items_data)
     item_1 = ir.repository[0]
     item_2 = ir.repository[1]
-    assert_equal [item_1], ir.delete(2)
+    assert_equal [item_1, item_2], ir.repository
+    ir.delete(2)
+    assert_equal [item_1], ir.repository
   end
 
 end
