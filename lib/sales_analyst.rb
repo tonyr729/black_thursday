@@ -51,12 +51,12 @@ class SalesAnalyst
   end
 
   def average_average_price_per_merchant
-  array_1 = @merchants.repository.map do |merchant|
-    average_item_price_for_merchant(merchant.id)
-  end
-  sum_avg_merch_prices = array_1.inject(0) { |sum, x| sum + x }
-  result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
-  result.round(2)
+    array_1 = @merchants.repository.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
+    end
+    sum_avg_merch_prices = array_1.inject(0) { |sum, x| sum + x }
+    result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
+    result.round(2)
   end
 
   def average_item_price_finder
@@ -68,8 +68,8 @@ class SalesAnalyst
     differences = @item_prices_array.map do |price|
       price - BigDecimal(average_item_price_finder, 2)
     end
-    squares = differences.map {|num| num ** 2}
-    summed_squares = squares.inject(0) { |sum, x| sum + x }
+    squares = differences.map { |num| num ** 2 }
+    summed_squares = squares.inject(0) { |memo, x| memo + x }
     a = BigDecimal(summed_squares, 4)
     b = BigDecimal(@item_prices_array.count - 1)
     st_dev = Math.sqrt( a / b )
