@@ -11,42 +11,42 @@ class InvoiceTest < Minitest::Test
       :created_at  => Time.now,
       :updated_at  => Time.now,
     }
-    @invoice = Invoice.new(@data)
+    @i = Invoice.new(@data)
   end
 
   def test_it_exists
-    assert_instance_of Invoice, @invoice
+    assert_instance_of Invoice, @i
   end
 
   def test_it_has_id
-    assert_equal @data[:id].to_i, @invoice.id
+    assert_equal @data[:id].to_i, @i.id
   end
 
   def test_it_has_customer_id
-    assert_equal @data[:customer_id].to_i, @invoice.customer_id
+    assert_equal @data[:customer_id].to_i, @i.customer_id
   end
   
   def test_it_has_merchant_id
-    assert_equal @data[:merchant_id].to_i, @invoice.merchant_id
+    assert_equal @data[:merchant_id].to_i, @i.merchant_id
   end
 
   def test_it_has_status
-    assert_equal @data[:status], @invoice.status
+    assert_equal @data[:status], @i.status
   end
 
   def test_it_has_create_at_time
-    assert_equal @data[:created_at].to_s, @invoice.created_at.to_s
+    assert_equal @data[:created_at].to_s, @i.created_at.to_s
   end
   
   def test_it_has_instance_of_time
-    assert_instance_of Time, @invoice.created_at
+    assert_instance_of Time, @i.created_at
   end
 
   def test_it_has_update_at_time
-    assert_equal @data[:updated_at].to_s, @invoice.updated_at.to_s
+    assert_equal @data[:updated_at].to_s, @i.updated_at.to_s
   end
   
   def test_it_has_instance_of_time
-    assert_instance_of Time, @invoice.updated_at
+    assert_instance_of Time, @i.updated_at
   end
 end
