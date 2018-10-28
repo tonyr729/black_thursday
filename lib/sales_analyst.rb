@@ -32,11 +32,20 @@ class SalesAnalyst
     st_dev = average_items_per_merchant_standard_deviation
     mr = @merchants.repository
     mr.select do |merchant|
-      matches = @items.repository.select do |item|
-        item.merchant_id == merchant.id
-      end
-      matches.count > (st_dev + 1 + average_items_per_merchant)
+        matches = @items.repository.select do |item|
+            item.merchant_id == merchant.id
+          end
+        matches.length >= (st_dev * 2)
     end
+  end
+
+  def average_item_price_for_merchant(id)
+    specific_merchant_items = @items.repository.select {|item| item.merchant_id == id}
+    num_specific_items = specific_merchant_items.count
+    prices = specific_merchant_items.map {|item| item.unit_price}
+    sum = prices.inject(0) { |sum, x| sum + x }
+    result = BigDecimal.new(sum / num_specific_items)
+    result.round(2)
   end
 
 end
