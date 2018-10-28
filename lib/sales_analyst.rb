@@ -7,6 +7,8 @@ class SalesAnalyst
   def initialize (items, merchants)
     @items = items
     @merchants = merchants
+    @item_prices_array = @items.repository.map { |item| item.unit_price }
+
   end
 
   def average_items_per_merchant
@@ -19,12 +21,12 @@ class SalesAnalyst
     merchant_ids = sorted_items.map {|item| item.merchant_id}
     grouped_hash = merchant_ids.group_by {|id| id}
     number_of_items_per_merchant = grouped_hash.map {|k,v| v.count}
-    square = number_of_items_per_merchant.map do |num|
+    squares = number_of_items_per_merchant.map do |num|
       x = (num - average_items_per_merchant) ** 2
       x.abs
     end
-    summed_squares = square.inject(0) { |sum, x| sum + x }
-    st_dev = Math.sqrt(summed_squares / (square.count - 1))
+    summed_squares = squares.inject(0) { |sum, square| sum + square }
+    st_dev = Math.sqrt(summed_squares / (squares.count - 1))
     st_dev.round(2)
   end
 
@@ -57,6 +59,29 @@ class SalesAnalyst
   result.round(2)
   end
 
+  def average_item_price_finder
+    sum = @item_prices_array.inject(0) { |sum, x| sum + x }
+    BigDecimal.new(sum / @items.repository.count)
+  end
+
+  def item_price_standard_deviation
+    differences = @item_prices_array.map do |price|
+      price - BigDecimal.new(average_item_price_finder, 2)
+    end
+    squares = differences.map {|num| num ** 2}
+    summed_squares = squares.inject(0) { |sum, x| sum + x }
+    a = BigDecimal.new(summed_squares, 4)
+    b = BigDecimal.new(@item_prices_array.count - 1)
+    st_dev = Math.sqrt( a / b )
+    st_dev.round(2)
+  end
+
+  def golden_items
+    @items.repository.select do |item|
+      st_dev_modified = BigDecimal.new((item_price_standard_deviation * 2), 4 )
+      item.unit_price >= (average_item_price_finder + st_dev_modified)
+    end
+  end
 
 
 end
