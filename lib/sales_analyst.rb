@@ -48,4 +48,15 @@ class SalesAnalyst
     result.round(2)
   end
 
+  def average_average_price_per_merchant
+  array_1 = @merchants.repository.map do |merchant|
+    average_item_price_for_merchant(merchant.id)
+  end
+  sum_avg_merch_prices = array_1.inject(0) { |sum, x| sum + x }
+  result = BigDecimal.new(sum_avg_merch_prices / @merchants.repository.count)
+  result.round(2)
+  end
+
+
+
 end
