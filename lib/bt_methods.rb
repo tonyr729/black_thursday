@@ -127,7 +127,7 @@ module BTMethods
       else
         selected_instance.send("#{method}=", attributes[method.to_sym])
       end
-      if selected_instance.class == Item
+      if selected_instance.updated_at
         selected_instance.updated_at = Time.now
       end
     end
