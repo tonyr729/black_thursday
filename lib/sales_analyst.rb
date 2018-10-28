@@ -8,7 +8,6 @@ class SalesAnalyst
     @items = items
     @merchants = merchants
     @item_prices_array = @items.repository.map { |item| item.unit_price }
-
   end
 
   def average_items_per_merchant
@@ -35,7 +34,7 @@ class SalesAnalyst
     mr = @merchants.repository
     mr.select do |merchant|
       matches = @items.repository.select do |item|
-          item.merchant_id == merchant.id
+        item.merchant_id == merchant.id
       end
       matches.length >= (st_dev * 2)
     end
@@ -77,7 +76,7 @@ class SalesAnalyst
   end
 
   def golden_items
-    st_dev_modified = BigDecimal((item_price_standard_deviation * 2), 4 )
+    st_dev_modified = BigDecimal((item_price_standard_deviation * 2), 4)
     average_item_price = average_item_price_finder
     @items.repository.select do |item|
       item.unit_price >= (average_item_price + st_dev_modified)
