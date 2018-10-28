@@ -10,10 +10,8 @@ class SalesEngine
   attr_reader :items_csv, :merchants_csv, :merchants, :items, :analyst
 
   def initialize(csv_files)
-    @items_csv = csv_files[:items]
-    @merchants_csv = csv_files[:merchants]
-    @merchants = merchants_factory
-    @items = items_factory
+    @merchants = merchants_factory(csv_files[:merchants]) if csv_files[:merchants]
+    @items = items_factory(csv_files[:items]) if csv_files[:items]
     @analyst = SalesAnalyst.new(@items, @merchants)
   end
 
@@ -21,13 +19,13 @@ class SalesEngine
     self.new(csv_files)
   end
 
-  def merchants_factory
-    parsed_merchants_data = csv_parser(@merchants_csv)
+  def merchants_factory(merchants_csv)
+    parsed_merchants_data = csv_parser(merchants_csv)
     MerchantRepository.create_merchants(parsed_merchants_data)
   end
 
-  def items_factory
-    parsed_items_data = csv_parser(@items_csv)
+  def items_factory(items_csv)
+    parsed_items_data = csv_parser(items_csv)
     ItemRepository.create_items(parsed_items_data)
   end
 
