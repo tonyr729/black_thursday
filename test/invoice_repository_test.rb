@@ -84,12 +84,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
   def test_it_updates_attributes
     expected = @invoices.repository[1]
-    assert_equal "approved", expected.status
+    assert_equal :approved, expected.status
     actual = @invoices.update(7, {
-      status: "void",
+      status: :void,
     })
     assert_equal expected, actual
-    assert_equal "void", expected.status
+    assert_equal :void, expected.status
   end
 
   def test_it_can_delete_an_id

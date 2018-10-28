@@ -31,7 +31,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_has_status
-    assert_equal @data[:status], @i.status
+    assert_equal @data[:status].to_sym, @i.status
   end
 
   def test_it_has_create_at_time

@@ -64,7 +64,7 @@ module BTMethods
   def where_any(value, key)
     result = where_any_i(value, key) if value.class == Fixnum
     result = where_any_f(value, key) if value.class == Float
-    result = where_any_s(value, key) if value.class == String
+    result = where_any_s(value, key) if value.class == String || Symbol
     result = where_any_r(value, key) if value.class == Range
     result
   end
@@ -89,7 +89,7 @@ module BTMethods
     @repository.select do |repository_element|
       method_name = key
       property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
-      property.downcase.include?(value.downcase)
+      property.to_s.downcase.include?(value.to_s.downcase)
     end
   end
 
