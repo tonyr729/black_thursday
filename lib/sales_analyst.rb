@@ -77,9 +77,10 @@ class SalesAnalyst
   end
 
   def golden_items
+    st_dev_modified = BigDecimal.new((item_price_standard_deviation * 2), 4 )
+    average_item_price = average_item_price_finder
     @items.repository.select do |item|
-      st_dev_modified = BigDecimal.new((item_price_standard_deviation * 2), 4 )
-      item.unit_price >= (average_item_price_finder + st_dev_modified)
+      item.unit_price >= (average_item_price + st_dev_modified)
     end
   end
 
