@@ -81,5 +81,22 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected, actual
   end
 
+  def test_it_can_find_average_item_price
+    actual = @sa.average_item_price_finder
+    expected = BigDecimal.new("2821.3632")
+    assert_equal expected, actual
+  end
+
+  def test_it_can_calculate_standard_deviation_for_item_prices
+    actual = @sa.item_price_standard_deviation
+    expected = 8021.7
+    assert_equal expected, actual
+  end
+
+  def test_it_finds_golden_items
+    actual = @sa.golden_items
+    expected = [@item_1]
+    assert_equal expected, actual
+  end
 
 end
