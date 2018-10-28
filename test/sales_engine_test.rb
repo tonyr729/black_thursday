@@ -19,18 +19,6 @@ class SalesEngineTest < Minitest::Test
     assert_instance_of SalesEngine, @se
   end
 
-  def test_it_has_items_csv_data
-    assert_equal @data[:items], @se.items_csv
-  end
-
-  def test_it_has_merchant_csv_data
-    assert_equal @data[:merchants], @se.merchants_csv
-  end
-
-  def test_it_can_create_a_merchant_repository
-    assert_instance_of MerchantRepository, @se.merchants_factory
-  end
-
   def test_it_parses_csv_data
     expected = [
       {
@@ -52,17 +40,23 @@ class SalesEngineTest < Minitest::Test
         :updated_at=>"2013-01-21"
       }
     ]
-
+    
     assert_equal expected, @se.csv_parser("./data/mock_data.csv")
   end
-
-
+  
+  def test_it_can_create_a_merchant_repository
+    assert_instance_of MerchantRepository, @se.merchants_factory("./data/merchants.csv")
+  end
+  
   def test_it_can_create_an_item_repository
-    assert_instance_of ItemRepository, @se.items_factory
+    assert_instance_of ItemRepository, @se.items_factory("./data/items.csv")
   end
 
+  def test_it_can_create_an_invoice_repository
+    assert_instance_of InvoiceRepository, @se.invoice_factory("./data/invoices.csv")
+  end
+  
   def test_it_has_analyst
     assert_instance_of SalesAnalyst, @se.analyst
   end
-
 end
