@@ -43,9 +43,56 @@ class SalesAnalystTest < MiniTest::Test
     @merchant_3 = Merchant.new({id: 45, name: "nationalcorndogday.com"})
     @merchants = [@merchant_1, @merchant_2, @merchant_3]
 
+    @invoice_1 = Invoice.new({:id => 1, :customer_id => 10, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_2 = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_3 = Invoice.new({:id => 3, :customer_id => 8, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_4 = Invoice.new({:id => 4, :customer_id => 7, :merchant_id => 25, :status => :shipped, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_5 = Invoice.new({:id => 5, :customer_id => 6, :merchant_id => 25, :status => :shipped, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_6 = Invoice.new({:id => 6, :customer_id => 5, :merchant_id => 25, :status => :returned, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_7 = Invoice.new({:id => 7, :customer_id => 4, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_8 = Invoice.new({:id => 8, :customer_id => 3, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_9 = Invoice.new({:id => 9, :customer_id => 2, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_10 = Invoice.new({:id => 10, :customer_id => 1, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_11 = Invoice.new({:id => 11, :customer_id => 10, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_12 = Invoice.new({:id => 12, :customer_id => 10, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_13 = Invoice.new({:id => 13, :customer_id => 10, :merchant_id => 25, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_14 = Invoice.new({:id => 14, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_15 = Invoice.new({:id => 15, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_16 = Invoice.new({:id => 16, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_17 = Invoice.new({:id => 17, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_18 = Invoice.new({:id => 18, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_19 = Invoice.new({:id => 19, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_20 = Invoice.new({:id => 20, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_21 = Invoice.new({:id => 21, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_22 = Invoice.new({:id => 22, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_23 = Invoice.new({:id => 23, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_24 = Invoice.new({:id => 24, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_25 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 35, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_26 = Invoice.new({:id => 26, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_27 = Invoice.new({:id => 27, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_28 = Invoice.new({:id => 28, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_29 = Invoice.new({:id => 29, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_30 = Invoice.new({:id => 30, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_31 = Invoice.new({:id => 31, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_32 = Invoice.new({:id => 32, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_33 = Invoice.new({:id => 33, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_34 = Invoice.new({:id => 34, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_35 = Invoice.new({:id => 35, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_36 = Invoice.new({:id => 36, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_37 = Invoice.new({:id => 37, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_38 = Invoice.new({:id => 38, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    @invoice_39 = Invoice.new({:id => 39, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+    # @invoice_40 = Invoice.new({:id => 40, :customer_id => 10, :merchant_id => 45, :status => :pending, :created_at  => Time.now, :updated_at  => Time.now})
+
+    @invoices = [@invoice_1, @invoice_2, @invoice_3, @invoice_4, @invoice_5, @invoice_6, @invoice_7, @invoice_8, @invoice_9, @invoice_10,
+      @invoice_11, @invoice_12, @invoice_13, @invoice_14, @invoice_15, @invoice_16, @invoice_17, @invoice_18, @invoice_19, @invoice_20,
+      @invoice_21, @invoice_22, @invoice_23, @invoice_24, @invoice_25, @invoice_26, @invoice_27, @invoice_28, @invoice_29, @invoice_30,
+      @invoice_31, @invoice_32, @invoice_33, @invoice_34, @invoice_35, @invoice_36, @invoice_37, @invoice_38, @invoice_39] #@invoice_40]
+
     @mr = MerchantRepository.new(@merchants)
     @ir = ItemRepository.new(@items)
-    @sa = SalesAnalyst.new(@ir, @mr)
+    @invr = InvoiceRepository.new(@invoices)
+    @sa = SalesAnalyst.new(@ir, @mr, @invr)
   end
 
   def test_it_exists
@@ -98,5 +145,24 @@ class SalesAnalystTest < MiniTest::Test
     expected = [@item_1]
     assert_equal expected, actual
   end
+
+  def test_it_calculates_average_invoices_per_merchant
+    actual = @sa.average_invoices_per_merchant
+    expected = (@invoices.count.to_f / @merchants.count.to_f).round(2)
+    assert_equal expected, actual
+  end
+
+  def test_it_calculates_average_invoices_per_merchant_standard_deviation
+    actual = @sa.average_invoices_per_merchant_standard_deviation
+    expected = 9.29
+    assert_equal expected, actual
+  end
+
+  def test_it_can_calculate_top_merchants_by_invoice_count
+    actual = @sa.top_merchants_by_invoice_count
+    expected = [@merchant_1]
+    assert_equal expected, actual
+  end
+
 
 end
