@@ -1,4 +1,5 @@
 require_relative '../test/test_helper'
+require 'bigdecimal'
 require_relative '../lib/sales_analyst'
 require_relative '../lib/sales_engine'
 require_relative '../lib/merchant_repository'
@@ -68,5 +69,10 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected, actual
   end
 
+  def test_average_item_price_for_merchant
+    actual = @sa.average_item_price_for_merchant(25)
+    expected = BigDecimal.new((@item_1.unit_price + @item_2.unit_price) / BigDecimal.new(2, 4))
+    assert_equal expected, actual
+  end
 
 end
