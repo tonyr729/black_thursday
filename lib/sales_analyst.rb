@@ -64,8 +64,9 @@ class SalesAnalyst
   end
 
   def item_price_standard_deviation
+    avg_item_price = BigDecimal(average_item_price_finder, 2)
     differences = @item_prices_array.map do |price|
-      price - BigDecimal(average_item_price_finder, 2)
+      price - avg_item_price
     end
     squares = differences.map { |num| num ** 2 }
     summed_squares = squares.inject(0) { |memo, x| memo + x }
