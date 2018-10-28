@@ -15,7 +15,7 @@ class SalesEngine
     @merchants = merchants_factory(csv_files[:merchants]) if csv_files[:merchants]
     @items = items_factory(csv_files[:items]) if csv_files[:items]
     @invoices = invoice_factory(csv_files[:invoices]) if csv_files[:invoices]
-    @analyst = SalesAnalyst.new(@items, @merchants)
+    @analyst = SalesAnalyst.new(@items, @merchants, @invoices)
   end
 
   def self.from_csv(csv_files)
