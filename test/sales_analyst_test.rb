@@ -71,19 +71,19 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_has_average_item_price_for_merchant
     actual = @sa.average_item_price_for_merchant(25)
-    expected = BigDecimal.new((@item_1.unit_price + @item_2.unit_price) / BigDecimal.new(2, 4))
+    expected = BigDecimal((@item_1.unit_price + @item_2.unit_price) / BigDecimal(2, 4))
     assert_equal expected, actual
   end
 
   def test_it_has_average_average_item_price_for_merchant
     actual = @sa.average_average_price_per_merchant
-    expected = BigDecimal.new("7451.71")
+    expected = BigDecimal("7451.71")
     assert_equal expected, actual
   end
 
   def test_it_can_find_average_item_price
     actual = @sa.average_item_price_finder
-    expected = BigDecimal.new("2821.3632")
+    expected = BigDecimal("2821.3632")
     assert_equal expected, actual
   end
 
