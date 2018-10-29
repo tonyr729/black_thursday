@@ -162,12 +162,5 @@ class SalesAnalyst
     end
     percent = (x.to_f / @invoices.repository.length) * 100
     percent.round(2)
-
-
-    # @invoices.repository.count
-    #What percentage of invoices are shipped vs pending vs returned?
-    #(takes symbol as argument)
-
-
   end
 end
