@@ -147,10 +147,6 @@ class SalesAnalyst
     end
   end
 
-  def average_invoices_created_per_day
-
-  end
-
   def top_days_by_invoice_count
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     invoice_day = @invoices.repository.map{ |invoice| invoice.created_at.strftime("%A") }
@@ -160,6 +156,18 @@ class SalesAnalyst
     days_count.select{ |day,count| count > average + std_dev }.keys
   end
 
+  def invoice_status(status)
+    x = @invoices.repository.count do |invoice|
+      invoice.status == status
+    end
+    percent = (x.to_f / @invoices.repository.length) * 100
+    percent.round(2)
 
 
+    # @invoices.repository.count
+    #What percentage of invoices are shipped vs pending vs returned?
+    #(takes symbol as argument)
+
+
+  end
 end
