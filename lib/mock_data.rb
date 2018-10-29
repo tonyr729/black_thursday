@@ -42,10 +42,10 @@ class MockData
   end
 
   def invoices
-    invoice_1  = Invoice.new({:id => 1, :customer_id => 10, :merchant_id => 25, :status => :pending, :created_at  => Time.parse("2018-04-02"), :updated_at  => Time.now})
-    invoice_2  = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 35, :status => :pending, :created_at  => Time.parse("2018-04-03"), :updated_at  => Time.now})
-    invoice_2  = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 35, :status => :pending, :created_at  => Time.parse("2018-04-04"), :updated_at  => Time.now})
-    invoice_2  = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 35, :status => :pending, :created_at  => Time.parse("2018-04-05"), :updated_at  => Time.now})
+    invoice_1  = Invoice.new({:id => 1, :customer_id => 10, :merchant_id => 25, :status => :shipped, :created_at  => Time.parse("2018-04-02"), :updated_at  => Time.now})
+    invoice_2  = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 35, :status => :shipped, :created_at  => Time.parse("2018-04-03"), :updated_at  => Time.now})
+    invoice_2  = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 35, :status => :returned, :created_at  => Time.parse("2018-04-04"), :updated_at  => Time.now})
+    invoice_2  = Invoice.new({:id => 2, :customer_id => 9, :merchant_id => 35, :status => :returned, :created_at  => Time.parse("2018-04-05"), :updated_at  => Time.now})
     invoice_3  = Invoice.new({:id => 3, :customer_id => 8, :merchant_id => 35, :status => :pending, :created_at  => Time.parse("2018-04-06"), :updated_at  => Time.now})
     invoice_4  = Invoice.new({:id => 4, :customer_id => 7, :merchant_id => 45, :status => :shipped, :created_at  => Time.parse("2018-04-07"), :updated_at  => Time.now})
     invoice_5  = Invoice.new({:id => 5, :customer_id => 6, :merchant_id => 45, :status => :shipped, :created_at  => Time.parse("2018-04-08"), :updated_at  => Time.now})
