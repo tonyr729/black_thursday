@@ -1,4 +1,4 @@
-require 'pry'
+  require 'pry'
 
 module BTMethods
   def all
@@ -17,6 +17,14 @@ module BTMethods
 
   def find_all_by_name(name)
     where_any(name, "name")
+  end
+
+  def find_all_by_invoice_id(invoice_id)
+    where_any(invoice_id, "invoice_id")
+  end
+
+  def find_all_by_credit_card_number(credit_card_number)
+    where_any(credit_card_number, "credit_card_number")
   end
 
   def where(value, key)
