@@ -134,7 +134,7 @@ class SalesAnalyst
   def bottom_merchants_by_invoice_count
     st_dev = average_invoices_per_merchant_standard_deviation
     avg = average_invoices_per_merchant
-    low_count = avg - (st_dev * 2).to_f.round(2)
+    low_count = ((((st_dev * 2) - avg).abs).to_f).round(2)
     collection = {}
     grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
     grouped_invoices.each { |k, v| [collection[k] = v.count] }
@@ -142,9 +142,14 @@ class SalesAnalyst
     poor_merchants = merchant_ids - collection.keys
     poor_merchants.each { |merchant_id| collection[merchant_id] = 0 }
     pathetic_merchants = collection.select do |k,v|
-      v <= low_count
+      v < low_count
+    end.keys
+    pathetic_merchants.map do |merchant_id|
+      @merchants.repository.find do |merchant|
+        merchant.id == merchant_id
+      end
     end
-    binding.pry
+
   end
 
 

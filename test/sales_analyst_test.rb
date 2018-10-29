@@ -92,7 +92,7 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_can_calculate_bottom_merchants_by_invoice_count
     actual = @sa.bottom_merchants_by_invoice_count
-    expected = [@merchants[7]]
+    expected = [@merchants[0], @merchants[1], @merchants[2], @merchants[3], @merchants[7]]
     assert_equal expected, actual
   end
 
