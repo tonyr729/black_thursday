@@ -1,6 +1,6 @@
 require 'pry'
+require_relative '../lib/maths.rb'
 class SalesAnalyst
-
   attr_reader :items, :merchants, :invoices
 
   def initialize (items, merchants, invoices)
@@ -145,8 +145,21 @@ class SalesAnalyst
     bottom_merchants.map do |merchant_id|
       @merchants.repository.find {|merchant| merchant.id == merchant_id}
     end
+  end
+
+  def average_invoices_created_per_day
 
   end
+
+  def top_days_by_invoice_count
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    invoice_day = @invoices.repository.map{ |invoice| invoice.created_at.strftime("%A") }
+    days_count = days.map{ |day| [day, invoice_day.count(day)] }.to_h
+    average = (days_count.inject(0) { |memo, (k,v) | memo += v }.to_f / days_count.length.to_f).round(2)
+    std_dev = days_count.values.standard_deviation
+    days_count.select{ |day,count| count > average + std_dev }.keys
+  end
+
 
 
 end
