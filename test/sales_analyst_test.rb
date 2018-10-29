@@ -27,12 +27,12 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_items_per_merchant
     actual = @sa.average_items_per_merchant
-    assert_equal 4.17, actual
+    assert_equal 3.13, actual
   end
 
   def test_it_calculates_average_items_per_merchant_standard_deviation
     actual = @sa.average_items_per_merchant_standard_deviation
-    expected = 2.04
+    expected = 2.86
     assert_equal expected, actual
   end
 
@@ -50,7 +50,7 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_has_average_average_item_price_for_merchant
     actual = @sa.average_average_price_per_merchant
-    expected = BigDecimal("7622.88")
+    expected = BigDecimal("5633.28")
     assert_equal expected, actual
   end
 
@@ -80,15 +80,21 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_invoices_per_merchant_standard_deviation
     actual = @sa.average_invoices_per_merchant_standard_deviation
-    expected = 10.51
+    expected = 4.72
     assert_equal expected, actual
   end
 
-  # def test_it_can_calculate_top_merchants_by_invoice_count
-  #   actual = @sa.top_merchants_by_invoice_count
-  #   expected = [@merchant_1]
-  #   assert_equal expected, actual
-  # end
+  def test_it_can_calculate_top_merchants_by_invoice_count
+    actual = @sa.top_merchants_by_invoice_count
+    expected = [@merchants[6]]
+    assert_equal expected, actual
+  end
+
+  def test_it_can_calculate_bottom_merchants_by_invoice_count
+    actual = @sa.bottom_merchants_by_invoice_count
+    expected = [@merchants[7]]
+    assert_equal expected, actual
+  end
 
 
 end
