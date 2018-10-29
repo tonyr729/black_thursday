@@ -2,11 +2,12 @@ require 'pry'
 
 class SalesAnalyst
 
-  attr_reader :items, :merchants
+  attr_reader :items, :merchants, :invoices
 
-  def initialize (items, merchants)
+  def initialize (items, merchants, invoices)
     @items = items
     @merchants = merchants
+    @invoices = invoices
     @item_prices_array = @items.repository.map { |item| item.unit_price }
   end
 
@@ -16,8 +17,7 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    sorted_items = @items.repository.sort_by {|item| item.merchant_id}
-    merchant_ids = sorted_items.map {|item| item.merchant_id}
+    merchant_ids = @items.repository.map {|item| item.merchant_id}
     grouped_hash = merchant_ids.group_by {|id| id}
     number_of_items_per_merchant = grouped_hash.map {|k,v| v.count}
     squares = number_of_items_per_merchant.map do |num|
@@ -59,7 +59,7 @@ class SalesAnalyst
   end
 
   def average_item_price_finder
-    sum = @item_prices_array.inject(0) { |sum, x| sum + x }
+    sum = @item_prices_array.inject(0) { |memo, x| memo + x }
     BigDecimal(sum / @items.repository.count)
   end
 
@@ -84,5 +84,43 @@ class SalesAnalyst
     end
   end
 
+  def average_invoices_per_merchant
+    num_invoices = @invoices.repository.count
+    num_merchants = @merchants.repository.count
+    avg = num_invoices.to_f / num_merchants.to_f
+    avg.round(2)
+  end
+
+  def invoices_per_merchant
+    grouped_hash = @invoices.repository.group_by { |invoice| invoice.merchant_id }
+    grouped_hash.map {|k,v| v.count}
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    number_of_invoices_per_merchant = invoices_per_merchant
+    squares = number_of_invoices_per_merchant.map do |num|
+      x = (num - average_invoices_per_merchant) ** 2
+      x.abs
+    end
+    summed_squares = squares.inject(0) { |sum, square| sum + square }
+    st_dev = Math.sqrt(summed_squares / (squares.count - 1))
+    st_dev.round(2)
+  end
+
+  def top_merchants_by_invoice_count
+    #which merchants item count are more than 2 stdev above the average
+    average = average_invoices_per_merchant
+    st_dev = average_invoices_per_merchant_standard_deviation
+    y = @invoices.repository.group_by { |invoice| invoice.merchant_id }
+    z = y.map {|k,v| v.count}
+
+
+    grouped_hash = @invoices.repository.group_by { |invoice| invoice.merchant_id }
+    x = grouped_hash.select do |key, value|
+      # {key => value.count}
+      value.count >= average + (st_dev * 2)
+    end
+    binding.pry
+  end
 
 end
