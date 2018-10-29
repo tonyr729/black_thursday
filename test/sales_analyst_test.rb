@@ -12,9 +12,12 @@ require 'pry'
 class SalesAnalystTest < MiniTest::Test
   def setup
     @mock_data = MockData.new
-    @mr = MerchantRepository.new(@mock_data.merchants)
-    @ir = ItemRepository.new(@mock_data.items)
-    @invr = InvoiceRepository.new(@mock_data.invoices)
+    @merchants = @mock_data.merchants
+    @items = @mock_data.items
+    @invoices = @mock_data.invoices
+    @mr = MerchantRepository.new(@merchants)
+    @ir = ItemRepository.new(@items)
+    @invr = InvoiceRepository.new(@invoices)
     @sa = SalesAnalyst.new(@ir, @mr, @invr)
   end
 
@@ -24,30 +27,30 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_items_per_merchant
     actual = @sa.average_items_per_merchant
-    assert_equal 8.33, actual
+    assert_equal 3.13, actual
   end
 
   def test_it_calculates_average_items_per_merchant_standard_deviation
     actual = @sa.average_items_per_merchant_standard_deviation
-    expected = 9.29
+    expected = 2.86
     assert_equal expected, actual
   end
 
   def test_it_shows_merchants_with_high_item_count
     actual = @sa.merchants_with_high_item_count
-    expected = [@merchant_3]
+    expected = [@merchants[5]]
     assert_equal expected, actual
   end
 
   def test_it_has_average_item_price_for_merchant
     actual = @sa.average_item_price_for_merchant(25)
-    expected = BigDecimal((@item_1.unit_price + @item_2.unit_price) / BigDecimal(2, 4))
+    expected = BigDecimal("40000")
     assert_equal expected, actual
   end
 
   def test_it_has_average_average_item_price_for_merchant
     actual = @sa.average_average_price_per_merchant
-    expected = BigDecimal("7451.71")
+    expected = BigDecimal("5633.28")
     assert_equal expected, actual
   end
 
@@ -65,27 +68,33 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_finds_golden_items
     actual = @sa.golden_items
-    expected = [@item_1]
+    expected = [@items[0]]
     assert_equal expected, actual
   end
 
   def test_it_calculates_average_invoices_per_merchant
     actual = @sa.average_invoices_per_merchant
-    expected = (@mock_data.invoices.count.to_f / @mock_data.merchants.count.to_f).round(2)
+    expected = (@invoices.count / @merchants.count.to_f).round(2)
     assert_equal expected, actual
   end
 
   def test_it_calculates_average_invoices_per_merchant_standard_deviation
     actual = @sa.average_invoices_per_merchant_standard_deviation
-    expected = 15.83
+    expected = 4.72
     assert_equal expected, actual
   end
 
-  # def test_it_can_calculate_top_merchants_by_invoice_count
-  #   actual = @sa.top_merchants_by_invoice_count
-  #   expected = [@merchant_1]
-  #   assert_equal expected, actual
-  # end
+  def test_it_can_calculate_top_merchants_by_invoice_count
+    actual = @sa.top_merchants_by_invoice_count
+    expected = [@merchants[6]]
+    assert_equal expected, actual
+  end
+
+  def test_it_can_calculate_bottom_merchants_by_invoice_count
+    actual = @sa.bottom_merchants_by_invoice_count
+    expected = [@merchants[0], @merchants[1], @merchants[2], @merchants[3], @merchants[7]]
+    assert_equal expected, actual
+  end
 
 
 end
