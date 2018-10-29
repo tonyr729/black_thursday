@@ -1,5 +1,4 @@
 require 'pry'
-
 class SalesAnalyst
 
   attr_reader :items, :merchants, :invoices
@@ -31,29 +30,38 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     st_dev = average_items_per_merchant_standard_deviation
-    mr = @merchants.repository
-    mr.select do |merchant|
-      matches = @items.repository.select do |item|
-        item.merchant_id == merchant.id
+    avg = average_items_per_merchant
+    high_count = (avg + st_dev).to_f.round(2)
+    grouped_items = @items.repository.group_by {|item| item.merchant_id }
+    merchant_item_count_hash = grouped_items.map { |k, v| [k => v.count] }
+    stacked_merchants = merchant_item_count_hash.select { |pair| pair[0].values[0] > high_count }.flatten
+    stacked_merchants.map do |pair|
+      @merchants.repository.find do |merchant|
+        merchant.id == pair.keys[0]
       end
-      matches.length >= (st_dev * 2)
     end
   end
 
   def average_item_price_for_merchant(id)
+    # binding.pry
     specific_merchant_items = @items.repository.select { |item| item.merchant_id == id }
     num_specific_items = specific_merchant_items.count
     prices = specific_merchant_items.map { |item| item.unit_price }
     sum = prices.inject(0) { |memo, x| memo + x }
-    result = BigDecimal(sum / num_specific_items)
-    result.round(2)
+    if num_specific_items > 0
+      result = BigDecimal(sum / num_specific_items)
+      result.round(2)
+    else BigDecimal(0, 4)
+    end
   end
 
   def average_average_price_per_merchant
     array_1 = @merchants.repository.map do |merchant|
       average_item_price_for_merchant(merchant.id)
     end
-    sum_avg_merch_prices = array_1.inject(0) { |sum, x| sum + x }
+    grouped_items = @items.repository.group_by {|item| item.merchant_id }
+    grouped_items.map { |k, v| [k => v.count] }
+    sum_avg_merch_prices = array_1.inject(0) {|sum, x| sum + x}
     result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
     result.round(2)
   end
@@ -108,19 +116,48 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    #which merchants item count are more than 2 stdev above the average
-    average = average_invoices_per_merchant
     st_dev = average_invoices_per_merchant_standard_deviation
-    y = @invoices.repository.group_by { |invoice| invoice.merchant_id }
-    z = y.map {|k,v| v.count}
-
-
-    grouped_hash = @invoices.repository.group_by { |invoice| invoice.merchant_id }
-    x = grouped_hash.select do |key, value|
-      # {key => value.count}
-      value.count >= average + (st_dev * 2)
+    avg = average_invoices_per_merchant
+    high_count = (avg + (st_dev * 2)).to_f.round(2)
+    grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
+    merchant_invoice_count_pairs = grouped_invoices.map { |k, v| {k => v.count} }
+    top_merchants = merchant_invoice_count_pairs.select {|pair| pair.values[0] > high_count}
+    top_merchants.map do |pair|
+      @merchants.repository.find do |merchant|
+        merchant.id == pair.keys[0]
+      end
     end
-    binding.pry
   end
+
+  def bottom_merchants_by_invoice_count
+    st_dev = average_invoices_per_merchant_standard_deviation
+    avg = average_invoices_per_merchant
+    low_count = ((((st_dev * 2) - avg).abs).to_f).round(2)
+    collection = {}
+    grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
+    grouped_invoices.each { |k, v| [collection[k] = v.count] }
+    merchant_ids = @merchants.repository.map { |merchant| merchant.id }
+    itemless_merchants = merchant_ids - collection.keys
+    itemless_merchants.each { |merchant_id| collection[merchant_id] = 0 }
+    bottom_merchants = collection.select do |_k,v|
+      v < low_count
+    end.keys
+    bottom_merchants.map do |merchant_id|
+      @merchants.repository.find {|merchant| merchant.id == merchant_id}
+    end
+  end
+
+  def average_invoices_created_per_day
+
+  end
+
+  def top_days_by_invoice_count
+
+  #  On which days are invoices created at more than one
+  #standard deviation *above* the mean?
+
+  end
+
+
 
 end
