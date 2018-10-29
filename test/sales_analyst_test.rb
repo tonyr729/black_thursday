@@ -96,5 +96,13 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected, actual
   end
 
+  def test_it_calculates_top_days_by_invoice_count
+    actual = @sa.top_days_by_invoice_count
+    expected = ["Sunday"]
+    binding.pry
+    assert_equal expected, actual
+  end
+
+
 
 end
