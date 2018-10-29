@@ -11,7 +11,7 @@ class TransactionTest < Minitest::Test
       :id => 1,
       :invoice_id => 2179,
       :credit_card_number => 4068631943231473,
-      :credit_card_expiration_date => 0217,
+      :credit_card_expiration_date => "0217",
       :result => "success",
       :created_at => Time.parse("2012-02-26"),
       :updated_at => Time.now,
@@ -35,7 +35,7 @@ class TransactionTest < Minitest::Test
   end
 
   def test_it_has_a_credit_card_expiration_date
-    assert_equal 0217, @transaction.credit_card_expiration_date
+    assert_equal "0217", @transaction.credit_card_expiration_date
   end
 
   def test_it_has_a_result
