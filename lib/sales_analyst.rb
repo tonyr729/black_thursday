@@ -31,12 +31,15 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     st_dev = average_items_per_merchant_standard_deviation
-    mr = @merchants.repository
-    mr.select do |merchant|
-      matches = @items.repository.select do |item|
-        item.merchant_id == merchant.id
+    avg = average_items_per_merchant
+    high_count = (avg + st_dev).to_f.round(2)
+    grouped_items = @items.repository.group_by {|item| item.merchant_id }
+    merchant_item_count_hash = grouped_items.map { |k, v| [k => v.count] }
+    stacked_merchants = merchant_item_count_hash.select { |pair| pair[0].values[0] > high_count }.flatten
+    stacked_merchants.map do |pair|
+      @merchants.repository.find do |merchant|
+        merchant.id == pair.keys[0]
       end
-      matches.length >= (st_dev * 2)
     end
   end
 
@@ -111,10 +114,6 @@ class SalesAnalyst
     #which merchants item count are more than 2 stdev above the average
     average = average_invoices_per_merchant
     st_dev = average_invoices_per_merchant_standard_deviation
-    y = @invoices.repository.group_by { |invoice| invoice.merchant_id }
-    z = y.map {|k,v| v.count}
-
-
     grouped_hash = @invoices.repository.group_by { |invoice| invoice.merchant_id }
     x = grouped_hash.select do |key, value|
       # {key => value.count}
