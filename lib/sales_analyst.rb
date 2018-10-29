@@ -145,8 +145,19 @@ class SalesAnalyst
     bottom_merchants.map do |merchant_id|
       @merchants.repository.find {|merchant| merchant.id == merchant_id}
     end
+  end
+
+  def average_invoices_created_per_day
 
   end
+
+  def top_days_by_invoice_count
+
+  #  On which days are invoices created at more than one
+  #standard deviation *above* the mean?
+
+  end
+
 
 
 end
