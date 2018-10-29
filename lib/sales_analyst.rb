@@ -60,12 +60,10 @@ class SalesAnalyst
       average_item_price_for_merchant(merchant.id)
     end
     grouped_items = @items.repository.group_by {|item| item.merchant_id }
-    merchant_item_count_hash = grouped_items.map { |k, v| [k => v.count] }
-      sum_avg_merch_prices = array_1.inject(0) do |sum, x|
-        sum + x
-      end
-      result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
-      result.round(2)
+    grouped_items.map { |k, v| [k => v.count] }
+    sum_avg_merch_prices = array_1.inject(0) {|sum, x| sum + x}
+    result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
+    result.round(2)
   end
 
   def average_item_price_finder
@@ -122,9 +120,9 @@ class SalesAnalyst
     avg = average_invoices_per_merchant
     high_count = (avg + (st_dev * 2)).to_f.round(2)
     grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
-    merchant_invoice_count_hash = grouped_invoices.map { |k, v| [k => v.count] }
-    stacked_merchants = merchant_invoice_count_hash.select { |pair| pair[0].values[0] > high_count }.flatten
-    stacked_merchants.map do |pair|
+    merchant_invoice_count_pairs = grouped_invoices.map { |k, v| {k => v.count} }
+    top_merchants = merchant_invoice_count_pairs.select {|pair| pair.values[0] > high_count}
+    top_merchants.map do |pair|
       @merchants.repository.find do |merchant|
         merchant.id == pair.keys[0]
       end
@@ -139,15 +137,13 @@ class SalesAnalyst
     grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
     grouped_invoices.each { |k, v| [collection[k] = v.count] }
     merchant_ids = @merchants.repository.map { |merchant| merchant.id }
-    poor_merchants = merchant_ids - collection.keys
-    poor_merchants.each { |merchant_id| collection[merchant_id] = 0 }
-    pathetic_merchants = collection.select do |k,v|
+    itemless_merchants = merchant_ids - collection.keys
+    itemless_merchants.each { |merchant_id| collection[merchant_id] = 0 }
+    bottom_merchants = collection.select do |_k,v|
       v < low_count
     end.keys
-    pathetic_merchants.map do |merchant_id|
-      @merchants.repository.find do |merchant|
-        merchant.id == merchant_id
-      end
+    bottom_merchants.map do |merchant_id|
+      @merchants.repository.find {|merchant| merchant.id == merchant_id}
     end
 
   end
