@@ -1,8 +1,5 @@
 require_relative 'test_helper'
 require_relative '../lib/sales_engine'
-require_relative '../lib/merchant_repository'
-require_relative '../lib/item_repository'
-require_relative '../lib/sales_analyst'
 require 'pry'
 
 
@@ -40,14 +37,14 @@ class SalesEngineTest < Minitest::Test
         :updated_at=>"2013-01-21"
       }
     ]
-    
+
     assert_equal expected, @se.csv_parser("./data/mock_data.csv")
   end
-  
+
   def test_it_can_create_a_merchant_repository
     assert_instance_of MerchantRepository, @se.merchants_factory("./data/merchants.csv")
   end
-  
+
   def test_it_can_create_an_item_repository
     assert_instance_of ItemRepository, @se.items_factory("./data/items.csv")
   end
@@ -55,7 +52,11 @@ class SalesEngineTest < Minitest::Test
   def test_it_can_create_an_invoice_repository
     assert_instance_of InvoiceRepository, @se.invoice_factory("./data/invoices.csv")
   end
-  
+
+  def test_it_can_create_an_invoice_item_repository
+    assert_instance_of InvoiceItemRepository, @se.invoice_items_factory("./data/invoice_items.csv")
+  end
+
   def test_it_has_analyst
     assert_instance_of SalesAnalyst, @se.analyst
   end
