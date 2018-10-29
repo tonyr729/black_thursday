@@ -19,6 +19,10 @@ module BTMethods
     where_any(name, "name")
   end
 
+  def find_all_with_invoice_id(invoice_id)
+    where_any(invoice_id, "invoice_id")
+  end
+
   def where(value, key)
     result = where_i(value, key) if value.class == Fixnum
     result = where_f(value, key) if value.class == Float
