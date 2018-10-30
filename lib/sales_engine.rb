@@ -14,7 +14,7 @@ require_relative '../lib/sales_analyst'
 require 'csv'
 
 class SalesEngine
-  
+
   attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :invoice_items, :transactions, :customers, :analyst
 
   def initialize(csv_files)
@@ -22,11 +22,11 @@ class SalesEngine
     @items = items_factory(csv_files[:items])
     @invoices = invoice_factory(csv_files[:invoices])
     @invoice_items = invoice_items_factory(csv_files[:invoice_items])
-    @transactions = transactions_factory(csv_files[:transactions]) if csv_files[:transactions]
+    @transactions = transactions_factory(csv_files[:transactions])
     @customers = customer_factory(csv_files[:customers])
-    @analyst = SalesAnalyst.new(@items, @merchants, @invoices)
+    @analyst = SalesAnalyst.new(@items, @merchants, @invoices, @invoice_items, @transactions)
   end
-   
+
   def self.from_csv(csv_files)
     self.new(csv_files)
   end
@@ -56,8 +56,10 @@ class SalesEngine
   end
 
   def transactions_factory(transactions_csv)
+    return nil unless transactions_csv
     parsed_transactions_data = csv_parser(transactions_csv)
     TransactionRepository.create_transactions(parsed_transactions_data)
+  end
 
   def customer_factory(customer_csv)
     return nil unless customer_csv

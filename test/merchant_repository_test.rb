@@ -53,7 +53,7 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal [], mr.find_all_by_name("Bob")
     assert_equal [mr.repository[2]], mr.find_all_by_name("Michael")
   end
-  
+
   def test_it_creates_a_new_mr_with_attributes
     mr = MerchantRepository.create_merchants(@incoming_data)
     actual = mr.create({name: "Steve"}).last
@@ -69,13 +69,12 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal expected, actual
     assert_equal "George", expected.name
   end
-    
+
   def test_it_can_delete_an_id
     mr = MerchantRepository.create_merchants(@incoming_data)
     merchant_1 = mr.repository[0]
-    merchant_2 = mr.repository[1]
     merchant_3 = mr.repository[2]
     assert_equal [merchant_1, merchant_3], mr.delete(2)
   end
-    
+
 end

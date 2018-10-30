@@ -40,14 +40,14 @@ class TransactionRepositoryTest < Minitest::Test
     assert_instance_of Transaction, @transactions.repository[0]
     assert_equal 1, @transactions.repository[0].id
     assert_instance_of Transaction, @transactions.repository[1]
-    assert_equal 4177816490204479, @transactions.repository[1].credit_card_number
-    end
+    assert_equal "4177816490204479", @transactions.repository[1].credit_card_number
+  end
 
   def test_it_returns_all_subclasses
     actual = @transactions.all
     assert_instance_of Transaction, actual[0]
     assert_equal 2, actual.length
-    end
+  end
 
     def test_it_finds_by_id
       assert_nil @transactions.find_by_id(4)
