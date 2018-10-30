@@ -8,6 +8,8 @@ require_relative '../lib/item'
 require_relative '../lib/merchant'
 require_relative '../lib/invoice_item'
 require_relative '../lib/invoice_item_repository'
+require_relative '../lib/customer'
+require_relative '../lib/customer_repository'
 require_relative '../lib/mock_data.rb'
 require 'pry'
 
@@ -18,6 +20,7 @@ class SalesAnalystTest < MiniTest::Test
     @items = @mock_data.items
     @invoices = @mock_data.invoices
     @transactions = @mock_data.transactions
+    @customers = @mock_data.customers
     @invoice_item = InvoiceItem.new({
       :id => 6,
       :item_id => 7,
@@ -32,7 +35,8 @@ class SalesAnalystTest < MiniTest::Test
     @invr = InvoiceRepository.new(@invoices)
     @tr = TransactionRepository.new(@transactions)
     @iir = InvoiceItemRepository.new([@invoice_item])
-    @sa = SalesAnalyst.new(@ir, @mr, @invr, @iir, @tr)
+    @cr = CustomerRepository.new(@customers)
+    @sa = SalesAnalyst.new(@ir, @mr, @invr, @iir, @tr, @cr)
   end
 
   def test_it_exists
@@ -128,7 +132,6 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected_1, actual_1
     assert_equal expected_2, actual_2
     assert_equal expected_3, actual_3
-
   end
 
   def test_it_checks_if_any_invoice_is_paid_in_full
@@ -141,6 +144,13 @@ class SalesAnalystTest < MiniTest::Test
     expected = 10.99
     assert_equal expected, actual
   end
+
+  def test_it_can_give_top_buyers
+    actual = @sa.top_buyers(3)
+    expected = [@customers[0]]
+    assert_equal expected, actual
+  end
+
 
 
 end
