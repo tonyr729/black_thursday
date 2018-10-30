@@ -56,40 +56,76 @@ class MockData
     invoice_10 = Invoice.new({:id => 10, :customer_id => 1, :merchant_id => 55, :status => :pending, :created_at  => Time.parse("2018-04-13"), :updated_at  => Time.now})
     invoice_11 = Invoice.new({:id => 11, :customer_id => 10, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-14"), :updated_at  => Time.now})
     invoice_12 = Invoice.new({:id => 12, :customer_id => 10, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-15"), :updated_at  => Time.now})
-    invoice_13 = Invoice.new({:id => 13, :customer_id => 10, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-16"), :updated_at  => Time.now})
-    invoice_14 = Invoice.new({:id => 14, :customer_id => 10, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-17"), :updated_at  => Time.now})
-    invoice_15 = Invoice.new({:id => 15, :customer_id => 10, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-18"), :updated_at  => Time.now})
-    invoice_16 = Invoice.new({:id => 16, :customer_id => 10, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-19"), :updated_at  => Time.now})
-    invoice_17 = Invoice.new({:id => 17, :customer_id => 10, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-20"), :updated_at  => Time.now})
-    invoice_18 = Invoice.new({:id => 18, :customer_id => 10, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-21"), :updated_at  => Time.now})
-    invoice_19 = Invoice.new({:id => 19, :customer_id => 10, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-22"), :updated_at  => Time.now})
-    invoice_20 = Invoice.new({:id => 20, :customer_id => 10, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-23"), :updated_at  => Time.now})
-    invoice_21 = Invoice.new({:id => 21, :customer_id => 10, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-24"), :updated_at  => Time.now})
-    invoice_22 = Invoice.new({:id => 22, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-25"), :updated_at  => Time.now})
-    invoice_23 = Invoice.new({:id => 23, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-26"), :updated_at  => Time.now})
-    invoice_24 = Invoice.new({:id => 24, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-27"), :updated_at  => Time.now})
-    invoice_25 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-28"), :updated_at  => Time.now})
-    invoice_26 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-29"), :updated_at  => Time.now})
-    invoice_27 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-30"), :updated_at  => Time.now})
+    invoice_13 = Invoice.new({:id => 13, :customer_id => 9, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-16"), :updated_at  => Time.now})
+    invoice_14 = Invoice.new({:id => 14, :customer_id => 9, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-17"), :updated_at  => Time.now})
+    invoice_15 = Invoice.new({:id => 15, :customer_id => 9, :merchant_id => 65, :status => :pending, :created_at  => Time.parse("2018-04-18"), :updated_at  => Time.now})
+    invoice_16 = Invoice.new({:id => 16, :customer_id => 9, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-19"), :updated_at  => Time.now})
+    invoice_17 = Invoice.new({:id => 17, :customer_id => 8, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-20"), :updated_at  => Time.now})
+    invoice_18 = Invoice.new({:id => 18, :customer_id => 8, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-21"), :updated_at  => Time.now})
+    invoice_19 = Invoice.new({:id => 19, :customer_id => 7, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-22"), :updated_at  => Time.now})
+    invoice_20 = Invoice.new({:id => 20, :customer_id => 7, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-23"), :updated_at  => Time.now})
+    invoice_21 = Invoice.new({:id => 21, :customer_id => 7, :merchant_id => 75, :status => :pending, :created_at  => Time.parse("2018-04-24"), :updated_at  => Time.now})
+    invoice_22 = Invoice.new({:id => 22, :customer_id => 6, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-25"), :updated_at  => Time.now})
+    invoice_23 = Invoice.new({:id => 23, :customer_id => 6, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-26"), :updated_at  => Time.now})
+    invoice_24 = Invoice.new({:id => 24, :customer_id => 5, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-27"), :updated_at  => Time.now})
+    invoice_25 = Invoice.new({:id => 25, :customer_id => 5, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-28"), :updated_at  => Time.now})
+    invoice_26 = Invoice.new({:id => 25, :customer_id => 6, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-29"), :updated_at  => Time.now})
+    invoice_27 = Invoice.new({:id => 25, :customer_id => 7, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-04-30"), :updated_at  => Time.now})
     invoice_28 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-01"), :updated_at  => Time.now})
     invoice_29 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-02"), :updated_at  => Time.now})
     invoice_30 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-03"), :updated_at  => Time.now})
     invoice_31 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-04"), :updated_at  => Time.now})
-    invoice_32 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-05"), :updated_at  => Time.now})
-    invoice_33 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-06"), :updated_at  => Time.now})
-    invoice_34 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-07"), :updated_at  => Time.now})
-    invoice_35 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-08"), :updated_at  => Time.now})
-    invoice_36 = Invoice.new({:id => 25, :customer_id => 10, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-09"), :updated_at  => Time.now})
+    invoice_32 = Invoice.new({:id => 25, :customer_id => 1, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-05"), :updated_at  => Time.now})
+    invoice_33 = Invoice.new({:id => 25, :customer_id => 1, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-06"), :updated_at  => Time.now})
+    invoice_34 = Invoice.new({:id => 25, :customer_id => 2, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-07"), :updated_at  => Time.now})
+    invoice_35 = Invoice.new({:id => 25, :customer_id => 2, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-08"), :updated_at  => Time.now})
+    invoice_36 = Invoice.new({:id => 25, :customer_id => 2, :merchant_id => 85, :status => :pending, :created_at  => Time.parse("2018-05-09"), :updated_at  => Time.now})
     [invoice_1, invoice_2, invoice_3, invoice_4, invoice_5, invoice_6, invoice_7, invoice_8, invoice_9, invoice_10,
       invoice_11, invoice_12, invoice_13, invoice_14, invoice_15, invoice_16, invoice_17, invoice_18, invoice_19, invoice_20,
       invoice_21, invoice_22, invoice_23, invoice_24, invoice_25, invoice_26, invoice_27, invoice_28, invoice_29, invoice_30,
       invoice_31, invoice_32, invoice_33, invoice_34, invoice_35, invoice_36]
   end
 
+
   def transactions
-    transaction_1 = Transaction.new({:id => 6, :invoice_id => 8, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220",
-      :result => "success", :created_at => Time.now, :updated_at => Time.now})
-    [transaction_1]
+    transaction_1 = Transaction.new({:id => 1, :invoice_id => 1, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_2 = Transaction.new({:id => 2, :invoice_id => 2, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_3 = Transaction.new({:id => 3, :invoice_id => 3, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_4 = Transaction.new({:id => 4, :invoice_id => 4, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_5 = Transaction.new({:id => 5, :invoice_id => 5, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_6 = Transaction.new({:id => 6, :invoice_id => 6, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_7 = Transaction.new({:id => 7, :invoice_id => 7, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_8 = Transaction.new({:id => 8, :invoice_id => 8, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_9 = Transaction.new({:id => 9, :invoice_id => 9, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_10 = Transaction.new({:id => 10, :invoice_id => 10, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    transaction_11 = Transaction.new({:id => 11, :invoice_id => 10, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220", :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    [transaction_1, transaction_2, transaction_3, transaction_4, transaction_5, transaction_6, transaction_7, transaction_8, transaction_9, transaction_10, transaction_11]
   end
+
+  def customers
+    customer_1 = Customer.new({:id => 1, :first_name => "Joan", :last_name => "Clarke", :created_at => Time.now, :updated_at => Time.now})
+    customer_2 = Customer.new({:id => 2, :first_name => "Michael", :last_name => "Clampett", :created_at => Time.now, :updated_at => Time.now})
+    customer_3 = Customer.new({:id => 3, :first_name => "Tony", :last_name => "Robertson", :created_at => Time.now, :updated_at => Time.now})
+    customer_4 = Customer.new({:id => 4, :first_name => "Shawnee", :last_name => "Adelson", :created_at => Time.now, :updated_at => Time.now})
+    customer_5 = Customer.new({:id => 5, :first_name => "Chris", :last_name => "DAmico", :created_at => Time.now, :updated_at => Time.now})
+    customer_6 = Customer.new({:id => 6, :first_name => "Serena", :last_name => "Curry", :created_at => Time.now, :updated_at => Time.now})
+    customer_7 = Customer.new({:id => 7, :first_name => "Sarah", :last_name => "Lane", :created_at => Time.now, :updated_at => Time.now})
+    customer_8 = Customer.new({:id => 8, :first_name => "Megan", :last_name => "Guzowski", :created_at => Time.now, :updated_at => Time.now})
+    customer_9 = Customer.new({:id => 9, :first_name => "Lucretia", :last_name => "Keenan", :created_at => Time.now, :updated_at => Time.now})
+    customer_10 = Customer.new({:id => 10, :first_name => "Kelly", :last_name => "Broadbear", :created_at => Time.now, :updated_at => Time.now})
+    customer_11 = Customer.new({:id => 11, :first_name => "Maria", :last_name => "Kogle", :created_at => Time.now, :updated_at => Time.now})
+    customer_12 = Customer.new({:id => 12, :first_name => "Andy", :last_name => "Busold", :created_at => Time.now, :updated_at => Time.now})
+    customer_13 = Customer.new({:id => 13, :first_name => "Johnny", :last_name => "Flowers", :created_at => Time.now, :updated_at => Time.now})
+    customer_14 = Customer.new({:id => 14, :first_name => "Hunter", :last_name => "Grondin", :created_at => Time.now, :updated_at => Time.now})
+    customer_15 = Customer.new({:id => 15, :first_name => "Sydney", :last_name => "Skilken", :created_at => Time.now, :updated_at => Time.now})
+    customer_16 = Customer.new({:id => 16, :first_name => "Krissy", :last_name => "Held", :created_at => Time.now, :updated_at => Time.now})
+    customer_17 = Customer.new({:id => 17, :first_name => "Jonesy", :last_name => "Wilcox", :created_at => Time.now, :updated_at => Time.now})
+    customer_18 = Customer.new({:id => 18, :first_name => "Sarah", :last_name => "Studebaker", :created_at => Time.now, :updated_at => Time.now})
+    customer_19 = Customer.new({:id => 19, :first_name => "Dave", :last_name => "Yob", :created_at => Time.now, :updated_at => Time.now})
+    customer_20 = Customer.new({:id => 20, :first_name => "Tristan", :last_name => "Chan", :created_at => Time.now, :updated_at => Time.now})
+    [customer_1, customer_2, customer_3, customer_4, customer_5, customer_6, customer_7, customer_8, customer_9, customer_10, customer_11, customer_12,
+    customer_13, customer_14, customer_15, customer_16, customer_17, customer_18, customer_19, customer_20]
+  end
+
 
 end
