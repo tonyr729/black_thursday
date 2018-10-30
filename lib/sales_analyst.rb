@@ -167,14 +167,9 @@ class SalesAnalyst
   end
 
   def invoice_paid_in_full?(invoice_id)
-    paid = @transactions.repository.map do |transaction|
-      # binding.pry
-      if transaction.invoice_id == invoice_id
-        transaction
-      end
-    end
-    # binding.pry
-    if paid.empty? == false && paid[0].result == "success"
+    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
+    paid = @transactions.repository.find {|trx| trx.invoice_id == invoice_id}
+    if query == true && paid.result == "success"
       true
     else
       false
