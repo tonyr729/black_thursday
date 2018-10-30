@@ -165,4 +165,20 @@ class SalesAnalyst
     percent = (x.to_f / @invoices.repository.length) * 100
     percent.round(2)
   end
+
+  def invoice_paid_in_full?(invoice_id)
+    paid = @transactions.repository.map do |transaction|
+      # binding.pry
+      if transaction.invoice_id == invoice_id
+        transaction
+      end
+    end
+    # binding.pry
+    if paid.empty? == false && paid[0].result == "success"
+      true
+    else
+      false
+    end
+  end
+
 end
