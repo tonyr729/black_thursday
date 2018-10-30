@@ -21,20 +21,12 @@ class SalesAnalystTest < MiniTest::Test
     @invoices = @mock_data.invoices
     @transactions = @mock_data.transactions
     @customers = @mock_data.customers
-    @invoice_item = InvoiceItem.new({
-      :id => 6,
-      :item_id => 7,
-      :invoice_id => 8,
-      :quantity => 1,
-      :unit_price => "1099",
-      :created_at => Time.now,
-      :updated_at => Time.now
-    })
+    @invoice_items = @mock_data.invoice_items
     @mr = MerchantRepository.new(@merchants)
     @ir = ItemRepository.new(@items)
     @invr = InvoiceRepository.new(@invoices)
     @tr = TransactionRepository.new(@transactions)
-    @iir = InvoiceItemRepository.new([@invoice_item])
+    @iir = InvoiceItemRepository.new(@invoice_items)
     @cr = CustomerRepository.new(@customers)
     @sa = SalesAnalyst.new(@ir, @mr, @invr, @iir, @tr, @cr)
   end
@@ -141,7 +133,7 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_can_give_invoice_total
     actual = @sa.invoice_total(8)
-    expected = 10.99
+    expected = 11.99
     assert_equal expected, actual
   end
 
