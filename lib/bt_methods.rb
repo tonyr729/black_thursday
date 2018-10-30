@@ -70,9 +70,10 @@ module BTMethods
 
 
   def where_any(value, key)
+    # binding.pry
     result = where_any_i(value, key) if value.class == Fixnum
-    result = where_any_f(value, key) if value.class == Float
-    result = where_any_s(value, key) if value.class == String || Symbol && !Integer
+    result = where_any_f(value, key) if value.class == Float || value.class == BigDecimal
+    result = where_any_s(value, key) if value.class == String || value.class == Symbol
     result = where_any_r(value, key) if value.class == Range
     result
   end
@@ -86,10 +87,11 @@ module BTMethods
   end
 
   def where_any_f(value, key)
+    # binding.pry
     @repository.select do |repository_element|
       method_name = key
       property = repository_element.public_send(method_name) if repository_element.respond_to? method_name
-      property.to_f == value
+      property.to_f == value.to_f
     end
   end
 
