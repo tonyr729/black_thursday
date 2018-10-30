@@ -18,8 +18,12 @@ class InvoiceItemRepository
     self.new(invoice_item_list)
   end
 
-  def find_by_item_id(item_id)
+  def find_all_by_item_id(item_id)
     where_any(item_id, "item_id")
+  end
+
+  def find_all_with_invoice_id(invoice_id)
+    where_any(invoice_id, "invoice_id")
   end
 
   def inspect

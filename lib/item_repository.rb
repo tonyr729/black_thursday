@@ -22,7 +22,7 @@ class ItemRepository
   end
 
   def find_all_by_price(price)
-    where_any(price.to_f, "unit_price")
+    where_any(price, "unit_price")
   end
 
   def find_all_by_price_in_range(range)
