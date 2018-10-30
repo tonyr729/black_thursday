@@ -1,4 +1,5 @@
 require_relative '../lib/bt_methods'
+require_relative '../lib/invoice_item'
 require 'bigdecimal'
 
 class InvoiceItemRepository
