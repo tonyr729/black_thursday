@@ -57,9 +57,10 @@ class SalesEngineTest < Minitest::Test
   def test_it_can_create_an_invoice_item_repository
     assert_instance_of InvoiceItemRepository, @se.invoice_items_factory("./data/invoice_items.csv")
   end
-  
+
   def test_it_can_create_a_transaction_repository
     assert_instance_of TransactionRepository, @se.transactions_factory("./data/transactions.csv")
+  end
 
   def test_it_can_create_a_customer
     assert_instance_of CustomerRepository, @se.customer_factory("./data/customers.csv")

@@ -153,7 +153,7 @@ class SalesAnalyst
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     invoice_day = @invoices.repository.map{ |invoice| invoice.created_at.strftime("%A") }
     days_count = days.map{ |day| [day, invoice_day.count(day)] }.to_h
-    average = (days_count.inject(0) { |memo, (k,v) | memo += v }.to_f / days_count.length.to_f).round(2)
+    average = (days_count.inject(0) { |memo, (_k,v) | memo += v }.to_f / days_count.length.to_f).round(2)
     std_dev = days_count.values.standard_deviation
     days_count.select{ |day,count| count > average + std_dev }.keys
   end
@@ -169,7 +169,7 @@ class SalesAnalyst
   def invoice_paid_in_full?(invoice_id)
     query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
     paid = @transactions.repository.find {|trx| trx.invoice_id == invoice_id}
-    if query == true && paid.result == "success"
+    if query == true && paid.result == :success
       true
     else
       false
@@ -185,7 +185,7 @@ class SalesAnalyst
     specific_invoice_items.each do |ii|
       costs << (ii.unit_price * BigDecimal(ii.quantity))
     end
-    summed_costs = costs.inject(0) {|memo, cost| memo + cost}
+    costs.inject(0) {|memo, cost| memo + cost} if query
 
   end
 end
