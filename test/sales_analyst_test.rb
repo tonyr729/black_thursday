@@ -15,10 +15,21 @@ class SalesAnalystTest < MiniTest::Test
     @merchants = @mock_data.merchants
     @items = @mock_data.items
     @invoices = @mock_data.invoices
+    @transactions = @mock_data.transactions
+    @invoice_item = {
+      :id => 8,
+      :customer_id => 2,
+      :merchant_id => 5,
+      :status => "approved",
+      :created_at => Time.now,
+      :updated_at => Time.now,
+    }
     @mr = MerchantRepository.new(@merchants)
     @ir = ItemRepository.new(@items)
     @invr = InvoiceRepository.new(@invoices)
-    @sa = SalesAnalyst.new(@ir, @mr, @invr)
+    @tr = TransactionRepository.new(@transactions)
+    @iir = InvoiceItemRepository.new(@invoice_item)
+    @sa = SalesAnalyst.new(@ir, @mr, @invr, @iir, @tr)
   end
 
   def test_it_exists
@@ -116,5 +127,11 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected_3, actual_3
 
   end
+
+  def test_invoice_paid_in_full?
+    actual = @sa.invoice_paid_in_full?(8)
+    assert actual
+  end
+
 
 end

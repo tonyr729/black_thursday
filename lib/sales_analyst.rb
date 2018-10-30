@@ -1,12 +1,14 @@
 require 'pry'
 require_relative '../lib/maths.rb'
 class SalesAnalyst
-  attr_reader :items, :merchants, :invoices
+  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions
 
-  def initialize (items, merchants, invoices)
+  def initialize (items, merchants, invoices, invoice_items, transactions)
     @items = items
     @merchants = merchants
     @invoices = invoices
+    @invoice_items = invoice_items
+    @transactions = transactions
     @item_prices_array = @items.repository.map { |item| item.unit_price }
   end
 
@@ -163,4 +165,20 @@ class SalesAnalyst
     percent = (x.to_f / @invoices.repository.length) * 100
     percent.round(2)
   end
+
+  def invoice_paid_in_full?(invoice_id)
+    paid = @transactions.repository.map do |transaction|
+      # binding.pry
+      if transaction.invoice_id == invoice_id
+        transaction
+      end
+    end
+    # binding.pry
+    if paid.empty? == false && paid[0].result == "success"
+      true
+    else
+      false
+    end
+  end
+
 end
