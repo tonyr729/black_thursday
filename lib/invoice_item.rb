@@ -18,8 +18,8 @@ class InvoiceItem
     @invoice_id = invoice_item_info[:invoice_id].to_i
     @quantity = invoice_item_info[:quantity].to_i
     @unit_price = BigDecimal(invoice_item_info[:unit_price], sig_dig) / BigDecimal(100, sig_dig)
-    @created_at = Time.now
-    @updated_at = Time.now
+    @created_at = Time.parse(invoice_item_info[:created_at].to_s)
+    @updated_at = Time.parse(invoice_item_info[:updated_at].to_s)
   end
 
   def unit_price_to_dollars

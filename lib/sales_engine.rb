@@ -12,7 +12,7 @@ require 'csv'
 
 class SalesEngine
 
-  attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :analyst, :invoice_items, :customer
+  attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :analyst, :invoice_items, :customers
 
   def initialize(csv_files)
 
@@ -20,7 +20,7 @@ class SalesEngine
     @items = items_factory(csv_files[:items]) if csv_files[:items]
     @invoices = invoice_factory(csv_files[:invoices]) if csv_files[:invoices]
     @invoice_items = invoice_items_factory(csv_files[:invoice_items]) if csv_files[:invoice_items]
-    @customer = customer_factory(csv_files[:customer]) if csv_files[:customer]
+    @customers = customer_factory(csv_files[:customers]) if csv_files[:customers]
     @analyst = SalesAnalyst.new(@items, @merchants, @invoices)
   end
 

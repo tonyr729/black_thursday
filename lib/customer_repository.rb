@@ -16,12 +16,12 @@ class CustomerRepository
     self.new(customer_list)
   end
 
-  def find_by_first_name(name)
-    where(name, "first_name")
+  def find_all_by_first_name(name)
+    where_any(name, "first_name")
   end
 
-  def find_by_last_name(name)
-    where(name, "last_name")
+  def find_all_by_last_name(name)
+    where_any(name, "last_name")
   end
 
   def inspect

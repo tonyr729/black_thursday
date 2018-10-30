@@ -55,11 +55,11 @@ class CustomerRepositoryTest < Minitest::Test
     assert_equal @cr.repository[1], @cr.find_by_id(7)
   end
 
-  def test_it_finds_by_first_name
+  def test_it_finds_all_by_first_name
     assert_equal @cr.repository[1], @cr.find_by_first_name("John")
   end
 
-  def test_it_finds_by_last_name
+  def test_it_finds_all_by_last_name
     assert_equal @cr.repository[1], @cr.find_by_last_name("Smith")
   end
 
