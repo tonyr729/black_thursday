@@ -176,4 +176,16 @@ class SalesAnalyst
     end
   end
 
+  def invoice_total(invoice_id)
+    costs = []
+    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
+    specific_invoice_items = @invoice_items.repository.find_all do |invoice_item|
+      invoice_item.invoice_id == invoice_id
+    end
+    specific_invoice_items.map do |ii|
+      costs << (ii.unit_price * BigDecimal(ii.quantity))
+    end
+    summed_costs = costs.inject(0) {|memo, cost| memo + cost}
+
+  end
 end
