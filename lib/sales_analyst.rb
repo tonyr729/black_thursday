@@ -1,12 +1,14 @@
 require 'pry'
 require_relative '../lib/maths.rb'
 class SalesAnalyst
-  attr_reader :items, :merchants, :invoices
+  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions
 
-  def initialize (items, merchants, invoices)
+  def initialize (items, merchants, invoices, invoice_items, transactions)
     @items = items
     @merchants = merchants
     @invoices = invoices
+    @invoice_items = invoice_items
+    @transactions = transactions
     @item_prices_array = @items.repository.map { |item| item.unit_price }
   end
 

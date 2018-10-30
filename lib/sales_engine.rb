@@ -1,16 +1,19 @@
 require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
 require_relative '../lib/invoice_repository'
-require_relative '../lib/invoice_item_repository'
 require_relative '../lib/merchant'
 require_relative '../lib/item'
 require_relative '../lib/invoice'
+require_relative '../lib/invoice_item'
+require_relative '../lib/invoice_item_repository'
+require_relative '../lib/transaction'
+require_relative '../lib/transaction_repository'
 require_relative '../lib/sales_analyst'
 require 'csv'
 
 class SalesEngine
 
-  attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :analyst
+  attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :invoice_items, :transactions, :analyst
 
   def initialize(csv_files)
 
@@ -18,7 +21,8 @@ class SalesEngine
     @items = items_factory(csv_files[:items]) if csv_files[:items]
     @invoices = invoice_factory(csv_files[:invoices]) if csv_files[:invoices]
     @invoice_items = invoice_items_factory(csv_files[:invoice_items]) if csv_files[:invoice_items]
-    @analyst = SalesAnalyst.new(@items, @merchants, @invoices)
+    @transactions = transactions_factory(csv_files[:transactions]) if csv_files[:transactions]
+    @analyst = SalesAnalyst.new(@items, @merchants, @invoices, @invoice_items, @transactions)
   end
 
   def self.from_csv(csv_files)
@@ -43,6 +47,11 @@ class SalesEngine
   def invoice_items_factory(invoice_items_csv)
     parsed_invoice_items_data = csv_parser(invoice_items_csv)
     InvoiceItemRepository.create_invoice_items(parsed_invoice_items_data)
+  end
+
+  def transactions_factory(transactions_csv)
+    parsed_transactions_data = csv_parser(transactions_csv)
+    TransactionRepository.create_transactions(parsed_transactions_data)
   end
 
   def csv_parser(csv_path)
