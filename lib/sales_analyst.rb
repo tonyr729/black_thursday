@@ -1,12 +1,14 @@
 require 'pry'
 require_relative '../lib/maths.rb'
 class SalesAnalyst
-  attr_reader :items, :merchants, :invoices
+  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions
 
-  def initialize (items, merchants, invoices)
+  def initialize (items, merchants, invoices, invoice_items, transactions)
     @items = items
     @merchants = merchants
     @invoices = invoices
+    @invoice_items = invoice_items
+    @transactions = transactions
     @item_prices_array = @items.repository.map { |item| item.unit_price }
   end
 
@@ -162,5 +164,28 @@ class SalesAnalyst
     end
     percent = (x.to_f / @invoices.repository.length) * 100
     percent.round(2)
+  end
+
+  def invoice_paid_in_full?(invoice_id)
+    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
+    paid = @transactions.repository.find {|trx| trx.invoice_id == invoice_id}
+    if query == true && paid.result == "success"
+      true
+    else
+      false
+    end
+  end
+
+  def invoice_total(invoice_id)
+    costs = []
+    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
+    specific_invoice_items = @invoice_items.repository.find_all do |invoice_item|
+      invoice_item.invoice_id == invoice_id
+    end
+    specific_invoice_items.each do |ii|
+      costs << (ii.unit_price * BigDecimal(ii.quantity))
+    end
+    summed_costs = costs.inject(0) {|memo, cost| memo + cost}
+
   end
 end

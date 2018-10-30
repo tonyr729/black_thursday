@@ -1,25 +1,28 @@
 require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
 require_relative '../lib/invoice_repository'
-require_relative '../lib/invoice_item_repository'
 require_relative '../lib/merchant'
 require_relative '../lib/item'
 require_relative '../lib/invoice'
+require_relative '../lib/invoice_item'
+require_relative '../lib/invoice_item_repository'
+require_relative '../lib/transaction'
+require_relative '../lib/transaction_repository'
 require_relative '../lib/customer_repository'
 require_relative '../lib/customer'
 require_relative '../lib/sales_analyst'
 require 'csv'
 
 class SalesEngine
-
-  attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :analyst, :invoice_items, :customers
+  
+  attr_reader :items_csv, :merchants_csv, :merchants, :items, :invoices, :invoice_items, :transactions, :customers, :analyst
 
   def initialize(csv_files)
-
     @merchants = merchants_factory(csv_files[:merchants])
     @items = items_factory(csv_files[:items])
     @invoices = invoice_factory(csv_files[:invoices])
     @invoice_items = invoice_items_factory(csv_files[:invoice_items])
+    @transactions = transactions_factory(csv_files[:transactions]) if csv_files[:transactions]
     @customers = customer_factory(csv_files[:customers])
     @analyst = SalesAnalyst.new(@items, @merchants, @invoices)
   end
@@ -51,6 +54,10 @@ class SalesEngine
     parsed_invoice_items_data = csv_parser(invoice_items_csv)
     InvoiceItemRepository.create_invoice_items(parsed_invoice_items_data)
   end
+
+  def transactions_factory(transactions_csv)
+    parsed_transactions_data = csv_parser(transactions_csv)
+    TransactionRepository.create_transactions(parsed_transactions_data)
 
   def customer_factory(customer_csv)
     return nil unless customer_csv

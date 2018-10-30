@@ -85,4 +85,11 @@ class MockData
       invoice_21, invoice_22, invoice_23, invoice_24, invoice_25, invoice_26, invoice_27, invoice_28, invoice_29, invoice_30,
       invoice_31, invoice_32, invoice_33, invoice_34, invoice_35, invoice_36]
   end
+
+  def transactions
+    transaction_1 = Transaction.new({:id => 6, :invoice_id => 8, :credit_card_number => "4242424242424242", :credit_card_expiration_date => "0220",
+      :result => "success", :created_at => Time.now, :updated_at => Time.now})
+    [transaction_1]
+  end
+
 end
