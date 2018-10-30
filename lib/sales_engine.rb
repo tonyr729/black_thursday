@@ -24,7 +24,7 @@ class SalesEngine
     @invoice_items = invoice_items_factory(csv_files[:invoice_items])
     @transactions = transactions_factory(csv_files[:transactions])
     @customers = customer_factory(csv_files[:customers])
-    @analyst = SalesAnalyst.new(@items, @merchants, @invoices, @invoice_items, @transactions)
+    @analyst = SalesAnalyst.new(@items, @merchants, @invoices, @invoice_items, @transactions, @customers)
   end
 
   def self.from_csv(csv_files)

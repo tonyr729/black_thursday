@@ -1,14 +1,15 @@
 require 'pry'
 require_relative '../lib/maths.rb'
 class SalesAnalyst
-  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions
+  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions, :customers
 
-  def initialize (items, merchants, invoices, invoice_items, transactions)
+  def initialize (items, merchants, invoices, invoice_items, transactions, customers)
     @items = items
     @merchants = merchants
     @invoices = invoices
     @invoice_items = invoice_items
     @transactions = transactions
+    @customers = customers
     @item_prices_array = @items.repository.map { |item| item.unit_price }
   end
 
@@ -185,7 +186,33 @@ class SalesAnalyst
     specific_invoice_items.each do |ii|
       costs << (ii.unit_price * BigDecimal(ii.quantity))
     end
-    costs.inject(0) {|memo, cost| memo + cost} if query
-
+    costs.inject(0) {|memo, cost| memo += cost} if query
   end
+
+  def invoices_grouped_by_customer_id
+    @invoices.repository.group_by do |invoice|
+      invoice.customer_id
+    end
+  end
+
+
+
+  def top_buyers(x = 20)
+    customer_invoices = invoices_grouped_by_customer_id
+    customer_invoices.each do |key, value|
+      customer_invoices[key] = value.map do |invoice|
+        invoice_total(invoice.id)
+      end.compact
+    end
+    y = customer_invoices.sort_by do |key, value|
+      value
+    end
+    m = y.map do |customer|
+      @customers.find_by_id(customer[0])
+    end
+    m.slice(0, x)
+
+    #[customer, customer, customer, customer]
+  end
+
 end
