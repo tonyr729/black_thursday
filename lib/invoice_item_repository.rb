@@ -22,6 +22,10 @@ class InvoiceItemRepository
     where_any(item_id, "item_id")
   end
 
+  def find_all_with_invoice_id(invoice_id)
+    where_any(invoice_id, "invoice_id")
+  end
+
   def inspect
     "#<#{self.class} #{@repository.size} rows>"
   end

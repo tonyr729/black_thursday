@@ -64,7 +64,6 @@ class InvoiceItemRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_all_with_invoice_id
-
     assert_equal [], @iir.find_all_with_invoice_id(5)
     assert_equal [@iir.repository[1]], @iir.find_all_with_invoice_id(3)
   end
