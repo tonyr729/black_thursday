@@ -10,6 +10,7 @@ class SalesEngineTest < Minitest::Test
       :merchants => "./data/merchants.csv",
     }
     @se = SalesEngine.from_csv(@data)
+    
   end
 
   def test_it_can_exists
