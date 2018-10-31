@@ -13,21 +13,12 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    x = @items.repository.count / @merchants.repository.count.to_f
-    x.round(2)
+    (@items.repository.count / @merchants.repository.count.to_f).round(2)
   end
 
   def average_items_per_merchant_standard_deviation
-    merchant_ids = @items.repository.map {|item| item.merchant_id}
-    grouped_hash = merchant_ids.group_by {|id| id}
-    number_of_items_per_merchant = grouped_hash.map {|k,v| v.count}
-    squares = number_of_items_per_merchant.map do |num|
-      x = (num - average_items_per_merchant) ** 2
-      x.abs
-    end
-    summed_squares = squares.inject(0) { |sum, square| sum + square }
-    st_dev = Math.sqrt(summed_squares / (squares.count - 1))
-    st_dev.round(2)
+    item_counts = @items.repository.group_by { |i| i.merchant_id }.map { |_k, v| v.count }
+    item_counts.standard_deviation.round(2)
   end
 
   def merchants_with_high_item_count
