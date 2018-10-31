@@ -131,22 +131,24 @@ class SalesAnalyst
     end
   end
 
+  def find_all_invoices_by_merchant_id(merchant_id)
+    @invoices.where_any(merchant_id, "merchant_id")
+  end
+
+  def merchants_with_invoices
+    @merchants.repository.inject({}) do |merchant_invoices, merchant|
+      merchant_invoices[merchant] = find_all_invoices_by_merchant_id(merchant.id)
+      merchant_invoices
+    end
+  end
+
   def bottom_merchants_by_invoice_count
     st_dev = average_invoices_per_merchant_standard_deviation
     avg = average_invoices_per_merchant
     low_count = ((((st_dev * 2) - avg).abs).to_f).round(2)
-    collection = {}
-    grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
-    grouped_invoices.each { |k, v| [collection[k] = v.count] }
-    merchant_ids = @merchants.repository.map { |merchant| merchant.id }
-    itemless_merchants = merchant_ids - collection.keys
-    itemless_merchants.each { |merchant_id| collection[merchant_id] = 0 }
-    bottom_merchants = collection.select do |_k,v|
-      v < low_count
-    end.keys
-    bottom_merchants.map do |merchant_id|
-      @merchants.repository.find {|merchant| merchant.id == merchant_id}
-    end
+    merchants_with_invoices.map do |key, value|
+      key if value.count < low_count
+    end.compact
   end
 
   def top_days_by_invoice_count
