@@ -142,5 +142,11 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected, actual
   end
 
+  def test_it_gives_merchant_invoices
+    merchant = @merchants.first
+    actual = @sa.merchants_with_invoices
+    expected = [@invoices[0]]
+    assert_equal expected, actual[merchant]
+  end
 
 end
