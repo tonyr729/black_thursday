@@ -35,11 +35,10 @@ class SalesAnalyst
   end
 
   def average_item_price_for_merchant(id)
-    # binding.pry
     specific_merchant_items = @items.repository.select { |item| item.merchant_id == id }
     num_specific_items = specific_merchant_items.count
     prices = specific_merchant_items.map { |item| item.unit_price }
-    sum = prices.inject(0) { |memo, x| memo + x }
+    sum = prices.inject(0) { |prices_sum, price| prices_sum += price }
     if num_specific_items > 0
       result = BigDecimal(sum / num_specific_items)
       result.round(2)
@@ -48,18 +47,17 @@ class SalesAnalyst
   end
 
   def average_average_price_per_merchant
-    array_1 = @merchants.repository.map do |merchant|
+    merchant_averages = @merchants.repository.map do |merchant|
       average_item_price_for_merchant(merchant.id)
     end
     grouped_items = @items.repository.group_by {|item| item.merchant_id }
     grouped_items.map { |k, v| [k => v.count] }
-    sum_avg_merch_prices = array_1.inject(0) {|sum, x| sum + x}
-    result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
-    result.round(2)
+    sum_avg_merch_prices = merchant_averages.inject(0) {|sum, average| sum += average}
+    BigDecimal(sum_avg_merch_prices / @merchants.repository.count).round(2)
   end
 
   def average_item_price_finder
-    sum = @item_prices_array.inject(0) { |memo, x| memo + x }
+    sum = @item_prices_array.inject(0) { |summed_prices, item_price| summed_prices += item_price }
     BigDecimal(sum / @items.repository.count)
   end
 
@@ -69,10 +67,8 @@ class SalesAnalyst
       price - avg_item_price
     end
     squares = differences.map { |num| num ** 2 }
-    summed_squares = squares.inject(0) { |memo, x| memo + x }
-    a = BigDecimal(summed_squares, 4)
-    b = BigDecimal(@item_prices_array.count - 1)
-    st_dev = Math.sqrt( a / b )
+    sum = squares.inject(0) { |summed_squares, squares| summed_squares += squares }
+    st_dev = Math.sqrt(BigDecimal(sum, 4) / BigDecimal(@item_prices_array.count - 1))
     st_dev.round(2)
   end
 
@@ -93,32 +89,18 @@ class SalesAnalyst
 
   def invoices_per_merchant
     grouped_hash = @invoices.repository.group_by { |invoice| invoice.merchant_id }
-    grouped_hash.map {|k,v| v.count}
+    grouped_hash.map {|_k,v| v.count}
   end
 
   def average_invoices_per_merchant_standard_deviation
-    number_of_invoices_per_merchant = invoices_per_merchant
-    squares = number_of_invoices_per_merchant.map do |num|
-      x = (num - average_invoices_per_merchant) ** 2
-      x.abs
-    end
-    summed_squares = squares.inject(0) { |sum, square| sum + square }
-    st_dev = Math.sqrt(summed_squares / (squares.count - 1))
-    st_dev.round(2)
+    invoices_per_merchant.standard_deviation.round(2)
   end
 
   def top_merchants_by_invoice_count
     st_dev = average_invoices_per_merchant_standard_deviation
     avg = average_invoices_per_merchant
     high_count = (avg + (st_dev * 2)).to_f.round(2)
-    grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
-    merchant_invoice_count_pairs = grouped_invoices.map { |k, v| {k => v.count} }
-    top_merchants = merchant_invoice_count_pairs.select {|pair| pair.values[0] > high_count}
-    top_merchants.map do |pair|
-      @merchants.repository.find do |merchant|
-        merchant.id == pair.keys[0]
-      end
-    end
+    merchants_with_invoices.map { |k, v| k if v.count > high_count }.compact
   end
 
   def find_all_invoices_by_merchant_id(merchant_id)
