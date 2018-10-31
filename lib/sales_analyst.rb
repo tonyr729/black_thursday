@@ -179,14 +179,13 @@ class SalesAnalyst
 
   def invoice_total(invoice_id)
     costs = []
-    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
     specific_invoice_items = @invoice_items.repository.find_all do |invoice_item|
       invoice_item.invoice_id == invoice_id
     end
     specific_invoice_items.each do |ii|
       costs << (ii.unit_price * BigDecimal(ii.quantity))
     end
-    costs.inject(0) {|memo, cost| memo += cost} if query
+    costs.inject(0) {|memo, cost| memo += cost} if invoice_paid_in_full?(invoice_id)
   end
 
   def invoices_grouped_by_customer_id
@@ -195,24 +194,22 @@ class SalesAnalyst
     end
   end
 
-
-
   def top_buyers(x = 20)
     customer_invoices = invoices_grouped_by_customer_id
     customer_invoices.each do |key, value|
-      customer_invoices[key] = value.map do |invoice|
-        invoice_total(invoice.id)
-      end.compact
+      customer_invoices[key] = value.inject(0) do |memo, invoice|
+        total = invoice_total(invoice.id)
+        memo += total unless !total
+        memo
+      end
     end
-    y = customer_invoices.sort_by do |key, value|
+    sorted_invoices = customer_invoices.sort_by do |key, value|
       value
-    end
-    m = y.map do |customer|
+    end.reverse
+    sorted_customers = sorted_invoices.map do |customer|
       @customers.find_by_id(customer[0])
     end
     m.slice(0, x)
-
-    #[customer, customer, customer, customer]
   end
 
 end
