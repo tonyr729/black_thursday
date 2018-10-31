@@ -46,7 +46,7 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_items_per_merchant_standard_deviation
     actual = @sa.average_items_per_merchant_standard_deviation
-    expected = 2.86
+    expected = 2.82
     assert_equal expected, actual
   end
 
