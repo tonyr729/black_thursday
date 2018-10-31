@@ -21,18 +21,17 @@ class SalesAnalyst
     item_counts.standard_deviation.round(2)
   end
 
+  def items_per_merchant
+    grouped_hash = @items.repository.group_by { |item| item.merchant_id }
+    grouped_hash.map {|k,v| {k => v.count} }
+  end
+
   def merchants_with_high_item_count
     st_dev = average_items_per_merchant_standard_deviation
     avg = average_items_per_merchant
     high_count = (avg + st_dev).to_f.round(2)
-    grouped_items = @items.repository.group_by {|item| item.merchant_id }
-    merchant_item_count_hash = grouped_items.map { |k, v| [k => v.count] }
-    stacked_merchants = merchant_item_count_hash.select { |pair| pair[0].values[0] > high_count }.flatten
-    stacked_merchants.map do |pair|
-      @merchants.repository.find do |merchant|
-        merchant.id == pair.keys[0]
-      end
-    end
+    high_item_count_merchants = items_per_merchant.select { |pair| pair.values[0] > high_count }
+    high_item_count_merchants.map { |pair| @merchants.find_by_id(pair.keys[0]) }
   end
 
   def average_item_price_for_merchant(id)
@@ -179,6 +178,5 @@ class SalesAnalyst
       costs << (ii.unit_price * BigDecimal(ii.quantity))
     end
     costs.inject(0) {|memo, cost| memo + cost} if query
-
   end
 end
