@@ -133,32 +133,25 @@ class SalesAnalyst
   end
 
   def invoice_status(status)
-    x = @invoices.repository.count do |invoice|
+    matched_invoices = @invoices.repository.count do |invoice|
       invoice.status == status
     end
-    percent = (x.to_f / @invoices.repository.length) * 100
-    percent.round(2)
+    ((matched_invoices / @invoices.repository.length.to_f ) * 100).round(2)
   end
 
   def invoice_paid_in_full?(invoice_id)
-    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
-    paid = @transactions.repository.find {|trx| trx.invoice_id == invoice_id}
-    if query == true && paid.result == :success
-      true
-    else
-      false
-    end
+    it_exists = @transactions.repository.any? {|transaction| transaction.invoice_id == invoice_id}
+    paid = @transactions.repository.find {|transaction| transaction.invoice_id == invoice_id}
+    it_exists && paid.result == :success 
   end
 
   def invoice_total(invoice_id)
     costs = []
-    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
+    it_exists = @transactions.repository.any? {|transaction| transaction.invoice_id == invoice_id}
     specific_invoice_items = @invoice_items.repository.find_all do |invoice_item|
       invoice_item.invoice_id == invoice_id
     end
-    specific_invoice_items.each do |ii|
-      costs << (ii.unit_price * BigDecimal(ii.quantity))
-    end
-    costs.inject(0) {|memo, cost| memo + cost} if query
+    specific_invoice_items.each { |ii| costs << (ii.unit_price * BigDecimal(ii.quantity)) }
+    costs.inject(0) {|summed_cost, cost| summed_cost += cost} if it_exists
   end
 end
