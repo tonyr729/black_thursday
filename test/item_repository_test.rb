@@ -2,10 +2,8 @@ require_relative 'test_helper.rb'
 require_relative '../lib/item_repository'
 require_relative '../lib/item'
 require 'bigdecimal'
-require 'pry'
 
 class ItemRepositoryTest < Minitest::Test
-
   def setup
     @data_1 = {
       :id          => 1,

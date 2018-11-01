@@ -1,5 +1,4 @@
 require_relative '../test/test_helper'
-require 'bigdecimal'
 require_relative '../lib/sales_analyst'
 require_relative '../lib/sales_engine'
 require_relative '../lib/merchant_repository'
@@ -9,7 +8,8 @@ require_relative '../lib/merchant'
 require_relative '../lib/invoice_item'
 require_relative '../lib/invoice_item_repository'
 require_relative '../lib/mock_data.rb'
-require 'pry'
+require 'bigdecimal'
+
 
 class SalesAnalystTest < MiniTest::Test
   def setup

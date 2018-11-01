@@ -1,11 +1,8 @@
 require_relative 'test_helper.rb'
 require_relative '../lib/transaction'
 require 'time'
-require 'pry'
 
 class TransactionTest < Minitest::Test
-  # id,invoice_id,credit_card_number,credit_card_expiration_date,result,created_at,updated_at
-  # 1,2179,4068631943231473,0217,success,2012-02-26 20:56:56 UTC,2012-02-26 20:56:56 UTC
   def setup
     @transaction = Transaction.new({
       :id => 1,

@@ -1,5 +1,5 @@
-require 'pry'
 require_relative '../lib/maths.rb'
+
 class SalesAnalyst
   attr_reader :items, :merchants, :invoices, :invoice_items, :transactions
 

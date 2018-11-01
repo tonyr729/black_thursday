@@ -1,7 +1,6 @@
 require_relative 'test_helper.rb'
 require_relative '../lib/customer_repository'
 require_relative '../lib/customer'
-require 'pry'
 
 class CustomerRepositoryTest < Minitest::Test
 
