@@ -1,7 +1,5 @@
 require_relative 'test_helper'
 require_relative '../lib/sales_engine'
-require 'pry'
-
 
 class SalesEngineTest < Minitest::Test
   def setup
@@ -10,7 +8,6 @@ class SalesEngineTest < Minitest::Test
       :merchants => "./data/merchants.csv",
     }
     @se = SalesEngine.from_csv(@data)
-
   end
 
   def test_it_can_exists

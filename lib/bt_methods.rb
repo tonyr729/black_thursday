@@ -1,5 +1,3 @@
-require 'pry'
-
 module BTMethods
   def all
     @repository
@@ -139,5 +137,4 @@ module BTMethods
     repository_element.id == id
     end
   end
-
 end

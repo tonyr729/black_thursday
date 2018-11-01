@@ -1,7 +1,5 @@
 require_relative 'test_helper.rb'
 require_relative '../lib/merchant'
-require 'pry'
-
 
 class MerchantTest < Minitest::Test
   def setup

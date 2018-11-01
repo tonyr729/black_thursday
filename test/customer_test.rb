@@ -1,8 +1,6 @@
 require_relative 'test_helper.rb'
-require 'pry'
 require './lib/customer'
 require 'time'
-
 
 class CustomerTest < Minitest::Test
   def setup

@@ -1,9 +1,7 @@
 require_relative 'test_helper.rb'
-require 'pry'
 require 'bigdecimal'
 require './lib/invoice_item'
 require 'time'
-
 
 class InvoiceItemTest < Minitest::Test
   def setup
