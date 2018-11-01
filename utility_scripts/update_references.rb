@@ -1,10 +1,10 @@
-
+require 'pry'
 require 'csv'
-
+require "pry"
 
 at_exit do
   error = $!
-   if error
+  binding.pry if error
 end
 
 files_with_merchant_ids = %w[data/invoices.csv]
