@@ -7,12 +7,11 @@ class InvoiceRepository
     @repository = invoices
     @new_instance = Invoice
   end
-  
+
   def self.create_invoices(invoices_data)
     invoice_list = invoices_data.map do |invoice_data|
       Invoice.new(invoice_data)
     end
-
     self.new(invoice_list)
   end
 
@@ -31,5 +30,5 @@ class InvoiceRepository
   def inspect
     "#<#{self.class} #{@repository.size} rows>"
   end
-  
+
 end

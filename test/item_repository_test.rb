@@ -28,6 +28,7 @@ class ItemRepositoryTest < Minitest::Test
     @items_data = [@data_1, @data_2]
     @item_1 = Item.new(@data_1)
     @ir = ItemRepository.new([@item_1])
+    @item_repo = ItemRepository.create_items(@items_data)
   end
 
 
@@ -40,12 +41,10 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_creates_items
-    ir = ItemRepository.create_items(@items_data)
-
-    assert_instance_of Item, ir.repository[0]
-    assert_equal "Pencil", ir.repository[0].name
-    assert_instance_of Item, ir.repository[1]
-    assert_equal 3, ir.repository[1].merchant_id
+    assert_instance_of Item, @item_repo.repository[0]
+    assert_equal "Pencil", @item_repo.repository[0].name
+    assert_instance_of Item, @item_repo.repository[1]
+    assert_equal 3, @item_repo.repository[1].merchant_id
   end
 
   def test_it_returns_all_subclasses
@@ -53,49 +52,42 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_by_id
-    ir = ItemRepository.create_items(@items_data)
 
-    assert_nil ir.find_by_id(4)
-    assert_equal ir.repository[1], ir.find_by_id(2)
+    assert_nil @item_repo.find_by_id(4)
+    assert_equal @item_repo.repository[1], @item_repo.find_by_id(2)
   end
 
   def test_it_finds_by_name
-    ir = ItemRepository.create_items(@items_data)
 
-    assert_equal ir.repository[1], ir.find_by_name("Mark")
+    assert_equal @item_repo.repository[1], @item_repo.find_by_name("Mark")
   end
 
   def test_it_finds_all_with_description
-    ir = ItemRepository.create_items(@items_data)
 
-    assert_equal [], ir.find_all_with_description("purple")
-    assert_equal [ir.repository[1]], ir.find_all_with_description("ink")
+    assert_equal [], @item_repo.find_all_with_description("purple")
+    assert_equal [@item_repo.repository[1]], @item_repo.find_all_with_description("ink")
   end
 
   def test_it_finds_all_by_price
-    ir = ItemRepository.create_items(@items_data)
 
-    assert_equal [], ir.find_all_by_price(4.50)
-    assert_equal [ir.repository[0]], ir.find_all_by_price(BigDecimal(25))
+    assert_equal [], @item_repo.find_all_by_price(4.50)
+    assert_equal [@item_repo.repository[0]], @item_repo.find_all_by_price(BigDecimal(25))
   end
 
   def test_it_finds_all_by_range
-    ir = ItemRepository.create_items(@items_data)
 
-    assert_equal [], ir.find_all_by_price_in_range((1..3))
-    assert_equal [ir.repository[0]], ir.find_all_by_price_in_range((20..30))
+    assert_equal [], @item_repo.find_all_by_price_in_range((1..3))
+    assert_equal [@item_repo.repository[0]], @item_repo.find_all_by_price_in_range((20..30))
   end
 
   def test_it_finds_all_by_merchant_id
-    ir = ItemRepository.create_items(@items_data)
 
-    assert_equal [], ir.find_all_by_merchant_id(5)
-    assert_equal [ir.repository[1]], ir.find_all_by_merchant_id(3)
+    assert_equal [], @item_repo.find_all_by_merchant_id(5)
+    assert_equal [@item_repo.repository[1]], @item_repo.find_all_by_merchant_id(3)
   end
 
   def test_it_creates_new_ir_with_attributes
-    ir = ItemRepository.create_items(@items_data)
-    actual = ir.create({
+    actual = @item_repo.create({
       :name        => "Brioche Bun",
       :description => "Add coconut oil, then grill it",
       :unit_price  => BigDecimal(10.99,4),
@@ -103,15 +95,14 @@ class ItemRepositoryTest < Minitest::Test
       :updated_at  => Time.now,
       :merchant_id => 6
       }).last
-    expected = ir.repository.max_by { |x| x.id}
+    expected = @item_repo.repository.max_by { |x| x.id}
     assert_equal expected, actual
   end
 
   def test_it_updates_attributes
-    ir = ItemRepository.create_items(@items_data)
-    expected = ir.repository[1]
+    expected = @item_repo.repository[1]
     assert_equal "Marker", expected.name
-    actual = ir.update(2, {name: "Cotton Candy",
+    actual = @item_repo.update(2, {name: "Cotton Candy",
       description: "It's pink",
       merchant_id: 48})
     assert_equal expected, actual
@@ -121,12 +112,11 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_can_delete_an_id
-    ir = ItemRepository.create_items(@items_data)
-    item_1 = ir.repository[0]
-    item_2 = ir.repository[1]
-    assert_equal [item_1, item_2], ir.repository
-    ir.delete(2)
-    assert_equal [item_1], ir.repository
+    item_1 = @item_repo.repository[0]
+    item_2 = @item_repo.repository[1]
+    assert_equal [item_1, item_2], @item_repo.repository
+    @item_repo.delete(2)
+    assert_equal [item_1], @item_repo.repository
   end
 
 end

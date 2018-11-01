@@ -40,8 +40,7 @@ class SalesAnalyst
     prices = specific_merchant_items.map { |item| item.unit_price }
     sum = prices.inject(0) { |prices_sum, price| prices_sum += price }
     if num_specific_items > 0
-      result = BigDecimal(sum / num_specific_items)
-      result.round(2)
+      (BigDecimal(sum / num_specific_items)).round(2)
     else BigDecimal(0, 4)
     end
   end
@@ -67,7 +66,7 @@ class SalesAnalyst
       price - avg_item_price
     end
     squares = differences.map { |num| num ** 2 }
-    sum = squares.inject(0) { |summed_squares, squares| summed_squares += squares }
+    sum = squares.inject(0) { |summed_squares, square| summed_squares += square }
     st_dev = Math.sqrt(BigDecimal(sum, 4) / BigDecimal(@item_prices_array.count - 1))
     st_dev.round(2)
   end
@@ -117,7 +116,7 @@ class SalesAnalyst
   def bottom_merchants_by_invoice_count
     st_dev = average_invoices_per_merchant_standard_deviation
     avg = average_invoices_per_merchant
-    low_count = ((((st_dev * 2) - avg).abs).to_f).round(2)
+    low_count = (((st_dev * 2) - avg).abs.to_f).round(2)
     merchants_with_invoices.map do |key, value|
       key if value.count < low_count
     end.compact
@@ -127,22 +126,20 @@ class SalesAnalyst
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     invoice_day = @invoices.repository.map{ |invoice| invoice.created_at.strftime("%A") }
     days_count = days.map{ |day| [day, invoice_day.count(day)] }.to_h
-    average = (days_count.inject(0) { |memo, (_k,v) | memo += v }.to_f / days_count.length.to_f).round(2)
+    average = (days_count.inject(0) { |days_sum, (_k,v)| days_sum += v }.to_f / days_count.length.to_f).round(2)
     std_dev = days_count.values.standard_deviation
     days_count.select{ |day,count| count > average + std_dev }.keys
   end
 
   def invoice_status(status)
-    matched_invoices = @invoices.repository.count do |invoice|
-      invoice.status == status
-    end
+    matched_invoices = @invoices.repository.count {|invoice| invoice.status == status }
     ((matched_invoices / @invoices.repository.length.to_f ) * 100).round(2)
   end
 
   def invoice_paid_in_full?(invoice_id)
     it_exists = @transactions.repository.any? {|transaction| transaction.invoice_id == invoice_id}
     paid = @transactions.repository.find {|transaction| transaction.invoice_id == invoice_id}
-    it_exists && paid.result == :success 
+    it_exists && paid.result == :success
   end
 
   def invoice_total(invoice_id)
