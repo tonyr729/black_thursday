@@ -13,63 +13,50 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    x = @items.repository.count / @merchants.repository.count.to_f
-    x.round(2)
+    (@items.repository.count / @merchants.repository.count.to_f).round(2)
   end
 
   def average_items_per_merchant_standard_deviation
-    merchant_ids = @items.repository.map {|item| item.merchant_id}
-    grouped_hash = merchant_ids.group_by {|id| id}
-    number_of_items_per_merchant = grouped_hash.map {|k,v| v.count}
-    squares = number_of_items_per_merchant.map do |num|
-      x = (num - average_items_per_merchant) ** 2
-      x.abs
-    end
-    summed_squares = squares.inject(0) { |sum, square| sum + square }
-    st_dev = Math.sqrt(summed_squares / (squares.count - 1))
-    st_dev.round(2)
+    item_counts = @items.repository.group_by { |i| i.merchant_id }.map { |_k, v| v.count }
+    item_counts.standard_deviation.round(2)
+  end
+
+  def items_per_merchant
+    grouped_hash = @items.repository.group_by { |item| item.merchant_id }
+    grouped_hash.map {|k,v| {k => v.count} }
   end
 
   def merchants_with_high_item_count
     st_dev = average_items_per_merchant_standard_deviation
     avg = average_items_per_merchant
     high_count = (avg + st_dev).to_f.round(2)
-    grouped_items = @items.repository.group_by {|item| item.merchant_id }
-    merchant_item_count_hash = grouped_items.map { |k, v| [k => v.count] }
-    stacked_merchants = merchant_item_count_hash.select { |pair| pair[0].values[0] > high_count }.flatten
-    stacked_merchants.map do |pair|
-      @merchants.repository.find do |merchant|
-        merchant.id == pair.keys[0]
-      end
-    end
+    high_item_count_merchants = items_per_merchant.select { |pair| pair.values[0] > high_count }
+    high_item_count_merchants.map { |pair| @merchants.find_by_id(pair.keys[0]) }
   end
 
   def average_item_price_for_merchant(id)
-    # binding.pry
     specific_merchant_items = @items.repository.select { |item| item.merchant_id == id }
     num_specific_items = specific_merchant_items.count
     prices = specific_merchant_items.map { |item| item.unit_price }
-    sum = prices.inject(0) { |memo, x| memo + x }
+    sum = prices.inject(0) { |prices_sum, price| prices_sum += price }
     if num_specific_items > 0
-      result = BigDecimal(sum / num_specific_items)
-      result.round(2)
+      (BigDecimal(sum / num_specific_items)).round(2)
     else BigDecimal(0, 4)
     end
   end
 
   def average_average_price_per_merchant
-    array_1 = @merchants.repository.map do |merchant|
+    merchant_averages = @merchants.repository.map do |merchant|
       average_item_price_for_merchant(merchant.id)
     end
     grouped_items = @items.repository.group_by {|item| item.merchant_id }
     grouped_items.map { |k, v| [k => v.count] }
-    sum_avg_merch_prices = array_1.inject(0) {|sum, x| sum + x}
-    result = BigDecimal(sum_avg_merch_prices / @merchants.repository.count)
-    result.round(2)
+    sum_avg_merch_prices = merchant_averages.inject(0) {|sum, average| sum += average}
+    BigDecimal(sum_avg_merch_prices / @merchants.repository.count).round(2)
   end
 
   def average_item_price_finder
-    sum = @item_prices_array.inject(0) { |memo, x| memo + x }
+    sum = @item_prices_array.inject(0) { |summed_prices, item_price| summed_prices += item_price }
     BigDecimal(sum / @items.repository.count)
   end
 
@@ -79,10 +66,8 @@ class SalesAnalyst
       price - avg_item_price
     end
     squares = differences.map { |num| num ** 2 }
-    summed_squares = squares.inject(0) { |memo, x| memo + x }
-    a = BigDecimal(summed_squares, 4)
-    b = BigDecimal(@item_prices_array.count - 1)
-    st_dev = Math.sqrt( a / b )
+    sum = squares.inject(0) { |summed_squares, square| summed_squares += square }
+    st_dev = Math.sqrt(BigDecimal(sum, 4) / BigDecimal(@item_prices_array.count - 1))
     st_dev.round(2)
   end
 
@@ -103,89 +88,67 @@ class SalesAnalyst
 
   def invoices_per_merchant
     grouped_hash = @invoices.repository.group_by { |invoice| invoice.merchant_id }
-    grouped_hash.map {|k,v| v.count}
+    grouped_hash.map {|_k,v| v.count}
   end
 
   def average_invoices_per_merchant_standard_deviation
-    number_of_invoices_per_merchant = invoices_per_merchant
-    squares = number_of_invoices_per_merchant.map do |num|
-      x = (num - average_invoices_per_merchant) ** 2
-      x.abs
-    end
-    summed_squares = squares.inject(0) { |sum, square| sum + square }
-    st_dev = Math.sqrt(summed_squares / (squares.count - 1))
-    st_dev.round(2)
+    invoices_per_merchant.standard_deviation.round(2)
   end
 
   def top_merchants_by_invoice_count
     st_dev = average_invoices_per_merchant_standard_deviation
     avg = average_invoices_per_merchant
     high_count = (avg + (st_dev * 2)).to_f.round(2)
-    grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
-    merchant_invoice_count_pairs = grouped_invoices.map { |k, v| {k => v.count} }
-    top_merchants = merchant_invoice_count_pairs.select {|pair| pair.values[0] > high_count}
-    top_merchants.map do |pair|
-      @merchants.repository.find do |merchant|
-        merchant.id == pair.keys[0]
-      end
+    merchants_with_invoices.map { |k, v| k if v.count > high_count }.compact
+  end
+
+  def find_all_invoices_by_merchant_id(merchant_id)
+    @invoices.where_any(merchant_id, "merchant_id")
+  end
+
+  def merchants_with_invoices
+    @merchants.repository.inject({}) do |merchant_invoices, merchant|
+      merchant_invoices[merchant] = find_all_invoices_by_merchant_id(merchant.id)
+      merchant_invoices
     end
   end
 
   def bottom_merchants_by_invoice_count
     st_dev = average_invoices_per_merchant_standard_deviation
     avg = average_invoices_per_merchant
-    low_count = ((((st_dev * 2) - avg).abs).to_f).round(2)
-    collection = {}
-    grouped_invoices = @invoices.repository.group_by {|invoice| invoice.merchant_id }
-    grouped_invoices.each { |k, v| [collection[k] = v.count] }
-    merchant_ids = @merchants.repository.map { |merchant| merchant.id }
-    itemless_merchants = merchant_ids - collection.keys
-    itemless_merchants.each { |merchant_id| collection[merchant_id] = 0 }
-    bottom_merchants = collection.select do |_k,v|
-      v < low_count
-    end.keys
-    bottom_merchants.map do |merchant_id|
-      @merchants.repository.find {|merchant| merchant.id == merchant_id}
-    end
+    low_count = (((st_dev * 2) - avg).abs.to_f).round(2)
+    merchants_with_invoices.map do |key, value|
+      key if value.count < low_count
+    end.compact
   end
 
   def top_days_by_invoice_count
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     invoice_day = @invoices.repository.map{ |invoice| invoice.created_at.strftime("%A") }
     days_count = days.map{ |day| [day, invoice_day.count(day)] }.to_h
-    average = (days_count.inject(0) { |memo, (_k,v) | memo += v }.to_f / days_count.length.to_f).round(2)
+    average = (days_count.inject(0) { |days_sum, (_k,v)| days_sum += v }.to_f / days_count.length.to_f).round(2)
     std_dev = days_count.values.standard_deviation
     days_count.select{ |day,count| count > average + std_dev }.keys
   end
 
   def invoice_status(status)
-    x = @invoices.repository.count do |invoice|
-      invoice.status == status
-    end
-    percent = (x.to_f / @invoices.repository.length) * 100
-    percent.round(2)
+    matched_invoices = @invoices.repository.count {|invoice| invoice.status == status }
+    ((matched_invoices / @invoices.repository.length.to_f ) * 100).round(2)
   end
 
   def invoice_paid_in_full?(invoice_id)
-    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
-    paid = @transactions.repository.find {|trx| trx.invoice_id == invoice_id}
-    if query == true && paid.result == :success
-      true
-    else
-      false
-    end
+    it_exists = @transactions.repository.any? {|transaction| transaction.invoice_id == invoice_id}
+    paid = @transactions.repository.find {|transaction| transaction.invoice_id == invoice_id}
+    it_exists && paid.result == :success
   end
 
   def invoice_total(invoice_id)
     costs = []
-    query = @transactions.repository.any? {|trx| trx.invoice_id == invoice_id}
+    it_exists = @transactions.repository.any? {|transaction| transaction.invoice_id == invoice_id}
     specific_invoice_items = @invoice_items.repository.find_all do |invoice_item|
       invoice_item.invoice_id == invoice_id
     end
-    specific_invoice_items.each do |ii|
-      costs << (ii.unit_price * BigDecimal(ii.quantity))
-    end
-    costs.inject(0) {|memo, cost| memo + cost} if query
-
+    specific_invoice_items.each { |ii| costs << (ii.unit_price * BigDecimal(ii.quantity)) }
+    costs.inject(0) {|summed_cost, cost| summed_cost += cost} if it_exists
   end
 end

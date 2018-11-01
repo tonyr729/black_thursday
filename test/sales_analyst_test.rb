@@ -46,7 +46,7 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_items_per_merchant_standard_deviation
     actual = @sa.average_items_per_merchant_standard_deviation
-    expected = 2.86
+    expected = 2.82
     assert_equal expected, actual
   end
 
@@ -94,7 +94,7 @@ class SalesAnalystTest < MiniTest::Test
 
   def test_it_calculates_average_invoices_per_merchant_standard_deviation
     actual = @sa.average_invoices_per_merchant_standard_deviation
-    expected = 4.72
+    expected = 4.67
     assert_equal expected, actual
   end
 
@@ -142,5 +142,11 @@ class SalesAnalystTest < MiniTest::Test
     assert_equal expected, actual
   end
 
+  def test_it_gives_merchant_invoices
+    merchant = @merchants.first
+    actual = @sa.merchants_with_invoices
+    expected = [@invoices[0]]
+    assert_equal expected, actual[merchant]
+  end
 
 end
